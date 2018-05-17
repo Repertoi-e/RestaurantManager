@@ -16,6 +16,9 @@ import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
 
 import javax.swing.JLabel;
 import java.awt.GridLayout;
+import java.awt.List;
+import java.util.ArrayList;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.Color;
@@ -61,55 +64,28 @@ public class MainFrame extends JFrame {
 		final int Y = 5;
 		final int TABLE_SIZE = 78; 
 		
-		Table[] tables = {
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-				new Table(),
-		};
+		ArrayList<Table> tables = new ArrayList<>();
+		
+		for(int i = 0 ; i < 31 ; i++) {
+			tables.add(new Table());
+		}
+		
 		int currX;
 		int currY;
 		int f = 0;
 		int g = 0;
-		for (int i = 0; i < tables.length; i++) {
+		for (int i = 0; i < tables.size(); i++) {
 			if(X+(TABLE_SIZE*g)+5 > 540) {
 				g= 0;
 				f++;
 				continue;
 			}
-			tables[i].setId(i);
-			tables[i].setUsing(i % 2 == 0);
-			tables[i].getLayout().setBounds(X+(TABLE_SIZE*g)+5, Y+(TABLE_SIZE*f)+5, TABLE_SIZE, TABLE_SIZE);
-			tables[i].getLayout().setText("Table"+tables[i].getId());
-			tables[i].getLayout().setBorder(new LineBorder(tables[i].getUsing() ? Color.GREEN : Color.RED, 2));
-			contentPane.add(tables[i].getLayout());
+			tables.get(i).setId(i);
+			tables.get(i).setUsing(i % 2 == 0);
+			tables.get(i).getLayout().setBounds(X+(TABLE_SIZE*g)+5, Y+(TABLE_SIZE*f)+5, TABLE_SIZE, TABLE_SIZE);
+			tables.get(i).getLayout().setText("Table"+tables.get(i).getId());
+			tables.get(i).getLayout().setBorder(new LineBorder(tables.get(i).getUsing() ? Color.GREEN : Color.RED, 2));
+			contentPane.add(tables.get(i).getLayout());
 			g++;
 		}
 			
