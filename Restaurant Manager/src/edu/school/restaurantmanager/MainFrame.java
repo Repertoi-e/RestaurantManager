@@ -1,26 +1,15 @@
 package edu.school.restaurantmanager;
 
-import java.awt.BorderLayout;
+import edu.school.restaurantmanager.frames.TableViewFrame;
 import edu.school.restaurantmanager.objects.*;
 import java.awt.EventQueue;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import org.omg.PortableServer.ID_ASSIGNMENT_POLICY_ID;
-
-import javax.swing.JLabel;
-import java.awt.GridLayout;
-import java.awt.List;
 import java.util.ArrayList;
 
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import java.awt.Color;
 
 public class MainFrame extends JFrame {
@@ -36,14 +25,12 @@ public class MainFrame extends JFrame {
 	 */
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainFrame frame = new MainFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		EventQueue.invokeLater(() -> {
+			try {
+				MainFrame frame = new MainFrame();
+				frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		});
 	}
@@ -53,7 +40,7 @@ public class MainFrame extends JFrame {
 	 */
 	public MainFrame() {
 		
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setBounds(100, 100, 588, 377);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -70,23 +57,38 @@ public class MainFrame extends JFrame {
 			tables.add(new Table());
 		}
 		
-		int currX;
-		int currY;
-		int f = 0;
-		int g = 0;
+		int currX = 0;
+		int currY = 0;
 		for (int i = 0; i < tables.size(); i++) {
-			if(X+(TABLE_SIZE*g)+5 > 540) {
-				g= 0;
-				f++;
+			if(X+(TABLE_SIZE*currX)+5 > 540) {
+				currX= 0;
+				currY++;
 				continue;
 			}
-			tables.get(i).setId(i);
-			tables.get(i).setUsing(i % 2 == 0);
-			tables.get(i).getLayout().setBounds(X+(TABLE_SIZE*g)+5, Y+(TABLE_SIZE*f)+5, TABLE_SIZE, TABLE_SIZE);
-			tables.get(i).getLayout().setText("Table"+tables.get(i).getId());
-			tables.get(i).getLayout().setBorder(new LineBorder(tables.get(i).getUsing() ? Color.GREEN : Color.RED, 2));
+            Table currentTable = tables.get(i);
+			currentTable.setId(i);
+			currentTable.setUsing(i % 2 == 0);
+			currentTable.getLayout().setBounds(X+(TABLE_SIZE*currX)+5, Y+(TABLE_SIZE*currY)+5, TABLE_SIZE, TABLE_SIZE);
+			currentTable.getLayout().setText("Table"+tables.get(i).getId());
+			currentTable.getLayout().setBorder(new LineBorder(tables.get(i).getUsing() ? Color.GREEN : Color.RED, 1));
+			currentTable.getLayout().addActionListener(e -> {
+
+
+			    if (currentTable.getUsing()){
+                    TableViewFrame frame = new TableViewFrame(currentTable);
+                    frame.setVisible(true);
+                }else{
+			        int messgage = JOptionPane.showConfirmDialog(contentPane, "Are you sure you want to start new bill for the table", "Are you sure", JOptionPane.OK_CANCEL_OPTION);
+                    if(messgage == 0){
+                        TableViewFrame frame = new TableViewFrame(currentTable);
+                        frame.setVisible(true);
+                    }
+                }
+
+            });
 			contentPane.add(tables.get(i).getLayout());
-			g++;
+
+			currX++;
 		}
 			
 	}
