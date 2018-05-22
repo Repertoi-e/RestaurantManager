@@ -5,46 +5,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Table {
-	private JButton layout;
-	private int id;
-	private boolean isUsed;
-	private ArrayList<MenuProduct> orderedProducts;
-	private int bill;
+	public int id;
+	public boolean isUsed;
+	
+	JButton m_Layout;
+	ArrayList<MenuProduct> m_OrderedProducts;
+	int bill;
 	
 	public Table() {
-		layout = new JButton();
-		orderedProducts = new ArrayList<>();
+		m_Layout = new JButton();
+		m_OrderedProducts = new ArrayList<>();
 	}
 	
 	public JButton getLayout() {
-		return layout;
-	}
-	
-	public int getId() {
-		return id;
-	}
-	
-	public void setId(int id) {
-		this.id = id;
-	}
-	
-	public boolean getUsing(){
-		return isUsed;
-	}
-	
-	public void setUsing(boolean using) {
-		this.isUsed = using;
+		return m_Layout;
 	}
 
     public List<MenuProduct> getOrderedProducts() {
-        return orderedProducts;
+        return m_OrderedProducts;
     }
 
     public void addProduct(MenuProduct orderedProduct) {
-        this.orderedProducts.add(orderedProduct);
+        m_OrderedProducts.add(orderedProduct);
     }
 
     public void clearProducts() {
-	    this.orderedProducts = new ArrayList<>();
+	    m_OrderedProducts.clear();
     }
 }
