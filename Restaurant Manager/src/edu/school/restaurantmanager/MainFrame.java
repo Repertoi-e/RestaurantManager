@@ -1,75 +1,82 @@
 package edu.school.restaurantmanager;
 
-import edu.school.restaurantmanager.frames.TableViewFrame;
-import edu.school.restaurantmanager.objects.*;
+import edu.school.restaurantmanager.menu.MenuView;
+import edu.school.restaurantmanager.table.TableView;
+import edu.school.restaurantmanager.util.Utils;
 
 import javax.swing.*;
 import javax.swing.border.*;
 
-import java.util.ArrayList;
-
 import java.awt.Color;
+import java.awt.Dimension;
 
+@SuppressWarnings("serial")
 public class MainFrame extends JFrame {
-	static final long serialVersionUID = 3354660810234031086L;
+	
+	// Размера на прозореца
+	public static final int Width = 960, Height = 540;
+	
+	public static MainFrame Instance;
 	
 	JPanel m_ContentPane;
-
-	// Default constructor
-	public MainFrame() {
-		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		this.setBounds(100, 100, 588, 377);
-		
-		m_ContentPane = new JPanel();
-		m_ContentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		m_ContentPane.setLayout(null);
-		this.setContentPane(m_ContentPane);
-		
-		final int X = 5;
-		final int Y = 5;
-		final int TABLE_SIZE = 78; 
-		
-		ArrayList<Table> tables = new ArrayList<>();
-		
-		for(int i = 0 ; i < 31 ; i++) {
-			tables.add(new Table());
-		}
-		
-		int currX = 0;
-		int currY = 0;
-		for (int i = 0; i < tables.size(); i++) {
-			if(X + (TABLE_SIZE * currX) + 5 > 540) {
-				currX= 0;
-				currY++;
-				continue;
+	TableView m_TableView = null;
+	MenuView m_MenuView = null;
+	
+	// При първо пускане или когато размерът на прозореца се промени.
+	public void RebuildUI() {
+		// Полето с масите
+		{
+			// Да заема 60% хоризонтално място и 95% вертикално.
+			// Вместо hard-code-нат размер (пр.:  576 x 513px, което
+			// не изглежда добре, когато променяш размера на прозореца.)
+			final int width = Utils.GetPercentOfInteger(this.getWidth(), 60);
+			final int height = Utils.GetPercentOfInteger(this.getHeight(), 95);
+					
+			if (m_TableView == null)
+			{
+				m_TableView = new TableView();
+				m_TableView.setBackground(Color.RED);
+				m_ContentPane.add(m_TableView);
 			}
 			
-            Table currentTable = tables.get(i);
-			currentTable.id = i;
-			currentTable.isUsed = i % 2 == 0;
-			currentTable.getLayout().setBounds(X+(TABLE_SIZE*currX)+5, Y+(TABLE_SIZE*currY)+5, TABLE_SIZE, TABLE_SIZE);
-			currentTable.getLayout().setText("Table"+tables.get(i).id);
-			currentTable.getLayout().setBorder(new LineBorder(tables.get(i).isUsed ? Color.GREEN : Color.RED, 1));
-			currentTable.getLayout().addActionListener(e -> {
-			    if (currentTable.isUsed) {
-                    TableViewFrame frame = new TableViewFrame(currentTable);
-                    frame.setVisible(true);
-                } else {
-			        int messgage = JOptionPane.showConfirmDialog(m_ContentPane, "Are you sure you want to start new bill for the table", "Are you sure", JOptionPane.OK_CANCEL_OPTION);
-                    if(messgage == 0){
-                        TableViewFrame frame = new TableViewFrame(currentTable);
-                        frame.setVisible(true);
-                    }
-                }
-
-            });
-			m_ContentPane.add(tables.get(i).getLayout());
-
-			currX++;
+			m_TableView.setBounds(0, this.getHeight() - height, width, height);
+		}
+		
+		// Полето с менюто
+		{
+			final int width = Utils.GetPercentOfInteger(this.getWidth(), 40);
+			final int height = this.getHeight();
+					
+			if (m_MenuView == null)
+			{
+				m_MenuView = new MenuView();
+				m_MenuView.setBackground(Color.BLUE);
+				m_ContentPane.add(m_MenuView);
+			}
+			
+			m_MenuView.setBounds(this.getWidth() - width, 0, width, height);
 		}
 	}
+
+	public MainFrame() {
+		Instance = this;
+		
+		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		this.setSize(new Dimension(
+				MainFrame.Width, 
+				MainFrame.Height));
+		this.setMinimumSize(new Dimension(
+				(int) ((double) MainFrame.Width * 0.2), 
+				(int) ((double) MainFrame.Height * 0.2)));
+		this.setLocationRelativeTo(null);
+		
+		m_ContentPane = new JPanel();
+		m_ContentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+		m_ContentPane.setLayout(null);
+		m_ContentPane.addComponentListener(new ResizeListener());
+		this.setContentPane(m_ContentPane);
+	}
 	
-	// Launch the application
 	public static void main(String[] args) throws Exception {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		new MainFrame().setVisible(true);

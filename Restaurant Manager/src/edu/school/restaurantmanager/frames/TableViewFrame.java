@@ -5,9 +5,8 @@ import edu.school.restaurantmanager.objects.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+@SuppressWarnings("serial")
 public class TableViewFrame extends JFrame {
-    static final long serialVersionUID = -119258617372406297L;
-	
 	JPanel m_ContentPane;
 
     // Default constructor
