@@ -4,7 +4,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 public class ResizeListener implements ComponentListener {
-
+	
 	@Override
 	public void componentHidden(ComponentEvent e)
 	{
@@ -18,12 +18,14 @@ public class ResizeListener implements ComponentListener {
 	@Override
 	public void componentResized(ComponentEvent e)
 	{
-		MainFrame.Instance.RebuildUI();
+		if (e.getComponent() == null || !(e.getComponent() instanceof MainFrame))
+			return;
+		
+		((MainFrame)e.getComponent()).rebuildUI();
 	}
 
 	@Override
 	public void componentShown(ComponentEvent e)
 	{
 	}
-
 }

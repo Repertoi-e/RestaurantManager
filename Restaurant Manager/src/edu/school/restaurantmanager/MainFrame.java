@@ -7,35 +7,46 @@ import edu.school.restaurantmanager.util.Utils;
 import javax.swing.*;
 import javax.swing.border.*;
 
-import java.awt.Color;
-import java.awt.Dimension;
+import java.awt.*;
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame {
-	
-	// Размера на прозореца
+	// Размерът на прозореца
 	public static final int Width = 960, Height = 540;
 	
 	public static MainFrame Instance;
 	
 	JPanel m_ContentPane;
+	MainHeading m_MainHeader = null;
 	TableView m_TableView = null;
 	MenuView m_MenuView = null;
 	
-	// При първо пускане или когато размерът на прозореца се промени.
-	public void RebuildUI() {
+	// При първо пускане или когато размерът на прозореца се промени
+	public void rebuildUI() {
+		// Заглавието
+		{
+			// Вместо hard-code-нат размер, взимаме процент от размера на целия прозорец.
+			final int width = Utils.percent(this.getWidth(), 60);
+			final int height = 40;
+						
+			if (m_MainHeader == null)
+			{
+				m_MainHeader = new MainHeading();
+				m_ContentPane.add(m_MainHeader);
+			}
+			
+			m_MainHeader.setBounds(0, 0, width, height);
+			m_MainHeader.getLabel().setBounds(10, 0, width, height);
+		}
+		
 		// Полето с масите
 		{
-			// Да заема 60% хоризонтално място и 95% вертикално.
-			// Вместо hard-code-нат размер (пр.:  576 x 513px, което
-			// не изглежда добре, когато променяш размера на прозореца.)
-			final int width = Utils.GetPercentOfInteger(this.getWidth(), 60);
-			final int height = Utils.GetPercentOfInteger(this.getHeight(), 95);
+			final int width = Utils.percent(this.getWidth(), 60);
+			final int height = this.getHeight() - 40;
 					
 			if (m_TableView == null)
 			{
 				m_TableView = new TableView();
-				m_TableView.setBackground(Color.RED);
 				m_ContentPane.add(m_TableView);
 			}
 			
@@ -44,13 +55,12 @@ public class MainFrame extends JFrame {
 		
 		// Полето с менюто
 		{
-			final int width = Utils.GetPercentOfInteger(this.getWidth(), 40);
+			final int width = Utils.percent(this.getWidth(), 40);
 			final int height = this.getHeight();
 					
 			if (m_MenuView == null)
 			{
 				m_MenuView = new MenuView();
-				m_MenuView.setBackground(Color.BLUE);
 				m_ContentPane.add(m_MenuView);
 			}
 			
@@ -61,6 +71,8 @@ public class MainFrame extends JFrame {
 	public MainFrame() {
 		Instance = this;
 		
+		Fonts.RegisterFonts();
+		
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.setSize(new Dimension(
 				MainFrame.Width, 
@@ -69,16 +81,13 @@ public class MainFrame extends JFrame {
 				(int) ((double) MainFrame.Width * 0.2), 
 				(int) ((double) MainFrame.Height * 0.2)));
 		this.setLocationRelativeTo(null);
+		this.addComponentListener(new ResizeListener());
 		
 		m_ContentPane = new JPanel();
 		m_ContentPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		m_ContentPane.setLayout(null);
-		m_ContentPane.addComponentListener(new ResizeListener());
 		this.setContentPane(m_ContentPane);
 	}
 	
-	public static void main(String[] args) throws Exception {
-		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		new MainFrame().setVisible(true);
-	}
+	public static void main(String[] args) throws Exception { new MainFrame().setVisible(true); }
 }
