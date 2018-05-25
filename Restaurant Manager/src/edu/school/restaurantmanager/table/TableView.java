@@ -8,9 +8,11 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class TableView extends JPanel {
+
+	public static final Color BACKGROUND_COLOR = Color.decode("#455a64");
 	
 	public TableView() {
-		this.setBackground(Color.decode("#455a64"));
+		this.setBackground(BACKGROUND_COLOR);
 		this.setLayout(null);
 		
 		// Пример за жълта маса
@@ -23,10 +25,5 @@ public class TableView extends JPanel {
 		
 		this.add(new Table(100, 100, 180, 250, yellow));
 		this.add(new Table(300, 350, 90, 90, yellow));
-	}
-	
-	@Override
-	public void paintComponent(Graphics g) {
-	    super.paintComponent(g);
 	}
 }

@@ -11,10 +11,13 @@ import javax.swing.*;
 
 @SuppressWarnings("serial")
 public class MainHeading extends JPanel {
+	
+	public static final Color BACKGROUND_COLOR = Color.decode("#1c313a");
+
 	JLabel m_Label;
 	
 	public MainHeading() {
-		this.setBackground(Color.decode("#1c313a"));
+		this.setBackground(BACKGROUND_COLOR);
 		this.setLayout(null);
 		
 		Font font = new Font("SourceSansPro", Font.ITALIC | Font.BOLD, 25);

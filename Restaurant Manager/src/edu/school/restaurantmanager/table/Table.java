@@ -43,6 +43,11 @@ public class Table extends JButton {
 	
 	@Override
 	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		
+		g.setColor(TableView.BACKGROUND_COLOR);
+		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+
 		g.translate(this.getWidth() / 2, this.getHeight() / 2);
 		m_ChairComposition.draw((Graphics2D) g);
 		g.translate(-this.getWidth() / 2, -this.getHeight() / 2);
