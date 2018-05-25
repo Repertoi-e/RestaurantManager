@@ -21,7 +21,7 @@ public class MainHeading extends JPanel {
 		Map<TextAttribute, Object> fontAttribs = new HashMap<>(font.getAttributes());
 		fontAttribs.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 		
-		m_Label = new JLabel("Маси");				
+		m_Label = new JLabel("Маси");
 		m_Label.setFont(font.deriveFont(fontAttribs));
 		m_Label.setForeground(Color.decode("#eeeeee"));
 		this.add(m_Label);
