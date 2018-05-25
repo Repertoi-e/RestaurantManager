@@ -11,6 +11,7 @@ import java.awt.*;
 
 @SuppressWarnings("serial")
 public class MainFrame extends JFrame {
+	
 	// Размерът на прозореца
 	public static final int Width = 960, Height = 540;
 	
@@ -71,7 +72,7 @@ public class MainFrame extends JFrame {
 	public MainFrame() {
 		Instance = this;
 		
-		Fonts.RegisterFonts();
+		Fonts.registerFonts();
 		
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.setSize(new Dimension(

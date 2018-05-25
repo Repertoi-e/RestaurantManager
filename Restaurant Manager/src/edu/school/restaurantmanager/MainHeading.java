@@ -7,13 +7,15 @@ import java.awt.font.TextAttribute;
 
 import javax.swing.*;
 
+// Полето над масите, което показва заглавието
+
 @SuppressWarnings("serial")
 public class MainHeading extends JPanel {
-	
 	JLabel m_Label;
 	
 	public MainHeading() {
 		this.setBackground(Color.decode("#1c313a"));
+		this.setLayout(null);
 		
 		Font font = new Font("SourceSansPro", Font.ITALIC | Font.BOLD, 25);
 		Map<TextAttribute, Object> fontAttribs = new HashMap<>(font.getAttributes());

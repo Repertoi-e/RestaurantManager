@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class MenuView extends JPanel {
+	
 	public MenuView() {
 		this.setBackground(Color.decode("#718792"));
 	}
