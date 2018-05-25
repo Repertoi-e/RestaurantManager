@@ -28,8 +28,5 @@ public class TableView extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 	    super.paintComponent(g);
-
-	    this.invalidate();
-	    this.repaint();
 	}
 }
