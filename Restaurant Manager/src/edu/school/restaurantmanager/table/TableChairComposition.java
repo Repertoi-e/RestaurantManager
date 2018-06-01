@@ -49,10 +49,10 @@ public class TableChairComposition {
 		int tables = remain / CHAIR_SPACE;
 		int leftForPadding = remain - tables * CHAIR_SPACE;
 		
-		return new Pair<Integer, Integer>(tables, CHAIR_MARGIN + (int) ((double) leftForPadding / tables));
+		return new Pair<>(tables, CHAIR_MARGIN + (int) ((double) leftForPadding / tables));
 	}
 	
-	void drawChair(Graphics2D g2d) {
+	public void drawChair(Graphics2D g2d) {
 		// Основна част
 		g2d.setColor(m_Parent.m_Palette.Chair);
 		g2d.fillPolygon(CHAIR_POLYGON);

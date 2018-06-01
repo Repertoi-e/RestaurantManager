@@ -1,4 +1,6 @@
-package edu.school.restaurantmanager;
+package edu.school.restaurantmanager.util;
+
+import edu.school.restaurantmanager.MainFrame;
 
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
