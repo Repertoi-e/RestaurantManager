@@ -1,4 +1,4 @@
-package edu.school.restaurantmanager;
+package edu.school.restaurantmanager.util;
 
 import java.awt.*;
 import java.util.*;

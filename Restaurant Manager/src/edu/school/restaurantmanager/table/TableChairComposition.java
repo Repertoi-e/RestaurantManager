@@ -52,7 +52,7 @@ public class TableChairComposition {
 		return new Pair<>(tables, CHAIR_MARGIN + (int) ((double) leftForPadding / tables));
 	}
 	
-	void drawChair(Graphics2D g2d) {
+	public void drawChair(Graphics2D g2d) {
 		// Основна част
 		g2d.setColor(m_Parent.m_Palette.Chair);
 		g2d.fillPolygon(CHAIR_POLYGON);

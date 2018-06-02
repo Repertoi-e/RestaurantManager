@@ -2,6 +2,9 @@ package edu.school.restaurantmanager;
 
 import edu.school.restaurantmanager.menu.MenuView;
 import edu.school.restaurantmanager.table.TableView;
+import edu.school.restaurantmanager.util.Fonts;
+import edu.school.restaurantmanager.util.MainHeading;
+import edu.school.restaurantmanager.util.ResizeListener;
 import edu.school.restaurantmanager.util.Utils;
 
 import javax.swing.*;
@@ -13,14 +16,14 @@ import java.awt.*;
 public class MainFrame extends JFrame {
 	
 	// Размерът на прозореца
-	public static final int Width = 960, Height = 540;
+	private static final int Width = 960, Height = 540;
 	
-	public static MainFrame Instance;
+	private static MainFrame Instance;
 	
-	JPanel m_ContentPane;
-	MainHeading m_MainHeader = null;
-	TableView m_TableView = null;
-	MenuView m_MenuView = null;
+	private JPanel m_ContentPane;
+	private MainHeading m_MainHeader = null;
+	private TableView m_TableView = null;
+	private MenuView m_MenuView = null;
 	
 	// При първо пускане или когато размерът на прозореца се промени
 	public void rebuildUI() {
