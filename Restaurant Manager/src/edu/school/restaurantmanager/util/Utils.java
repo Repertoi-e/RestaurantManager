@@ -2,6 +2,8 @@ package edu.school.restaurantmanager.util;
 
 // Полезни функции, използвани често, без място другаде.
 
+import edu.school.restaurantmanager.table.TableUnavailableInfo;
+
 import java.awt.*;
 
 public class Utils {
@@ -13,7 +15,11 @@ public class Utils {
 	}
 
 	public static String getPriceAsString(int price) {
-		return "" + price / 100 + "." + price % 100 + " лв.";
+		return price / 100 + "." + String.format("%02d", price % 100) + " лв.";
+	}
+
+	public static String getBookHourAsString(TableUnavailableInfo info) {
+		return info.Hour + ":" + String.format("%02d", info.Minute);
 	}
 
 	public static void drawCenteredString(Graphics g, String text, Rectangle rect, Font font) {

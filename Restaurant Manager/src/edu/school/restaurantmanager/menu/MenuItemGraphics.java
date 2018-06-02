@@ -20,24 +20,24 @@ public class MenuItemGraphics {
     private RadialGradientPaint m_Paint;
     private Font m_NameLabelFont = new Font("SourceSansPro", Font.BOLD, 12);
     private Font m_PriceLabelFont = new Font("SourceSansPro", Font.ITALIC, 12);
-    private int nameWidth, nameHeight, priceWidth, priceHeight;
+    private int m_NameLabelWidth, m_PriceLabelWidth;
 
     void updateBounds(int halfWidth, int halfHeight) {
-        nameWidth = Utils.percent(halfWidth * 2, 80) / 2;
-        nameHeight = Utils.percent(halfHeight * 2, 20) / 2;
+        m_NameLabelWidth = Utils.percent(halfWidth * 2, 80) / 2;
+        int nameHeight = Utils.percent(halfHeight * 2, 20) / 2;
         {
-            m_NameLabelBounds.x = halfWidth - nameWidth;
+            m_NameLabelBounds.x = halfWidth - m_NameLabelWidth;
             m_NameLabelBounds.y = halfHeight - nameHeight;
-            m_NameLabelBounds.width = nameWidth * 2;
+            m_NameLabelBounds.width = m_NameLabelWidth * 2;
             m_NameLabelBounds.height = nameHeight * 2;
         }
 
-        priceWidth = Utils.percent(halfWidth * 2, 50) / 2;
-        priceHeight = Utils.percent(halfHeight * 2, 15) / 2;
+        m_PriceLabelWidth = Utils.percent(halfWidth * 2, 50) / 2;
+        int priceHeight = Utils.percent(halfHeight * 2, 15) / 2;
         {
-            m_PriceLabelBounds.x = halfWidth - priceWidth;
+            m_PriceLabelBounds.x = halfWidth - m_PriceLabelWidth;
             m_PriceLabelBounds.y = halfHeight - priceHeight + nameHeight * 2;
-            m_PriceLabelBounds.width = priceWidth * 2;
+            m_PriceLabelBounds.width = m_PriceLabelWidth * 2;
             m_PriceLabelBounds.height = priceHeight * 2;
         }
 
@@ -77,13 +77,13 @@ public class MenuItemGraphics {
             attribs.put(TextAttribute.KERNING, TextAttribute.KERNING_ON);
 
             Rectangle2D r2d = g2d.getFontMetrics(m_NameLabelFont).getStringBounds(item.getName(), g2d);
-            float fontSize = (float) (m_NameLabelFont.getSize2D() * nameWidth * 1.9 / r2d.getWidth());
+            float fontSize = (float) (m_NameLabelFont.getSize2D() * m_NameLabelWidth * 1.9 / r2d.getWidth());
             m_NameLabelFont = m_NameLabelFont.deriveFont(attribs).deriveFont(fontSize);
 
             String priceText = Utils.getPriceAsString(item.getPrice());
 
             r2d = g2d.getFontMetrics(m_PriceLabelFont).getStringBounds(priceText, g2d);
-            fontSize = (float) (m_PriceLabelFont.getSize2D() * priceWidth * 1.3 / r2d.getWidth());
+            fontSize = (float) (m_PriceLabelFont.getSize2D() * m_PriceLabelWidth * 1.3 / r2d.getWidth());
             m_PriceLabelFont = m_PriceLabelFont.deriveFont(attribs).deriveFont(fontSize);
 
             g2d.setColor(Color.decode("#eeeeee"));

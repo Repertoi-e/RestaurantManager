@@ -22,7 +22,7 @@ public class TableView extends JPanel {
 			yellow.Chair = Color.decode("#fbc02d");
 			yellow.ChairShadow = Color.decode("#e8b228");
 		}
-		
+
 		this.add(new Table(100, 100, 180, 250, yellow));
 		this.add(new Table(300, 350, 90, 90, yellow));
 	}
