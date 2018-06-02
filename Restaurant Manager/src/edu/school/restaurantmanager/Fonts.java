@@ -4,7 +4,7 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 
 public class Fonts {
-	public static final void registerFonts() {
+	public static void registerFonts() {
 		try {
 			GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 			ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, Fonts.class.getResourceAsStream("SourceSansPro-Regular.ttf")));

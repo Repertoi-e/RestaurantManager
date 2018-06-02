@@ -41,15 +41,15 @@ public class TableChairComposition {
 		m_Parent = parent;
 
 		// Смята предварително колко маси могат да се съберат и какво ще бъде разстоянието между тях.
-		m_X = calculateTablesAndMargin((int) (m_Parent.m_TableWidth - m_Parent.m_RoundnessX * 2));
-		m_Y = calculateTablesAndMargin((int) (m_Parent.m_TableHeight - m_Parent.m_RoundnessY * 2));
+		m_X = calculateTablesAndMargin(m_Parent.m_TableWidth - m_Parent.m_RoundnessX * 2);
+		m_Y = calculateTablesAndMargin(m_Parent.m_TableHeight - m_Parent.m_RoundnessY * 2);
 	}
 
 	Pair<Integer, Integer> calculateTablesAndMargin(int remain) {
 		int tables = remain / CHAIR_SPACE;
 		int leftForPadding = remain - tables * CHAIR_SPACE;
 		
-		return new Pair<Integer, Integer>(tables, CHAIR_MARGIN + (int) ((double) leftForPadding / tables));
+		return new Pair<>(tables, CHAIR_MARGIN + (int) ((double) leftForPadding / tables));
 	}
 	
 	void drawChair(Graphics2D g2d) {

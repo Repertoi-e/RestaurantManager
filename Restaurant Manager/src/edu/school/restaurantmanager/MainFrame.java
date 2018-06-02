@@ -27,8 +27,8 @@ public class MainFrame extends JFrame {
 		// Заглавието
 		{
 			// Вместо hard-code-нат размер, взимаме процент от размера на целия прозорец.
-			final int width = Utils.percent(this.getWidth(), 60);
-			final int height = 40;
+			int width = Utils.percent(this.getWidth(), 60);
+			int height = 40;
 						
 			if (m_MainHeader == null)
 			{
@@ -42,8 +42,8 @@ public class MainFrame extends JFrame {
 		
 		// Полето с масите
 		{
-			final int width = Utils.percent(this.getWidth(), 60);
-			final int height = this.getHeight() - 40;
+			int width = Utils.percent(this.getWidth(), 60);
+			int height = this.getHeight() - 40;
 					
 			if (m_TableView == null)
 			{
@@ -56,8 +56,8 @@ public class MainFrame extends JFrame {
 		
 		// Полето с менюто
 		{
-			final int width = Utils.percent(this.getWidth(), 40);
-			final int height = this.getHeight();
+			int width = Utils.percent(this.getWidth(), 40);
+			int height = this.getHeight();
 					
 			if (m_MenuView == null)
 			{
@@ -66,6 +66,7 @@ public class MainFrame extends JFrame {
 			}
 			
 			m_MenuView.setBounds(this.getWidth() - width, 0, width, height);
+			m_MenuView.getHeading().setBounds(0, 0, width, 40);
 		}
 	}
 
@@ -90,5 +91,5 @@ public class MainFrame extends JFrame {
 		this.setContentPane(m_ContentPane);
 	}
 	
-	public static void main(String[] args) throws Exception { new MainFrame().setVisible(true); }
+	public static void main(String[] args) { new MainFrame().setVisible(true); }
 }

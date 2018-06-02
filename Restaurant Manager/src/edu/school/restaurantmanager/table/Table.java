@@ -15,7 +15,7 @@ public class Table extends JButton {
 	TableColorPalette m_Palette;
 	int m_TableWidth, m_TableHeight;
 	int m_RoundnessX, m_RoundnessY;
-	int m_PaddingX = 0, m_PaddingY = 0;
+	int m_PaddingX, m_PaddingY;
 	TableChairComposition m_ChairComposition;
 	
 	/*
