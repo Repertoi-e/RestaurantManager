@@ -3,7 +3,6 @@ package edu.school.restaurantmanager;
 import edu.school.restaurantmanager.menu.MenuView;
 import edu.school.restaurantmanager.table.TableView;
 import edu.school.restaurantmanager.util.Fonts;
-import edu.school.restaurantmanager.util.MainHeading;
 import edu.school.restaurantmanager.util.ResizeListener;
 import edu.school.restaurantmanager.util.Utils;
 
@@ -12,7 +11,6 @@ import javax.swing.border.*;
 
 import java.awt.*;
 
-@SuppressWarnings("serial")
 public class MainFrame extends JFrame {
 	
 	// Размерът на прозореца
@@ -21,32 +19,16 @@ public class MainFrame extends JFrame {
 	private static MainFrame Instance;
 	
 	private JPanel m_ContentPane;
-	private MainHeading m_MainHeader = null;
 	private TableView m_TableView = null;
 	private MenuView m_MenuView = null;
 	
 	// При първо пускане или когато размерът на прозореца се промени
 	public void rebuildUI() {
-		// Заглавието
-		{
-			// Вместо hard-code-нат размер, взимаме процент от размера на целия прозорец.
-			int width = Utils.percent(this.getWidth(), 60);
-			int height = 40;
-						
-			if (m_MainHeader == null)
-			{
-				m_MainHeader = new MainHeading();
-				m_ContentPane.add(m_MainHeader);
-			}
-			
-			m_MainHeader.setBounds(0, 0, width, height);
-			m_MainHeader.getLabel().setBounds(10, 0, width, height);
-		}
-		
 		// Полето с масите
 		{
-			int width = Utils.percent(this.getWidth(), 60);
-			int height = this.getHeight() - 40;
+            // Вместо hard-code-нат размер, взимаме процент от размера на целия прозорец.
+            int width = Utils.percent(this.getWidth(), 60);
+			int height = this.getHeight();
 					
 			if (m_TableView == null)
 			{
@@ -54,8 +36,10 @@ public class MainFrame extends JFrame {
 				m_ContentPane.add(m_TableView);
 			}
 			
-			m_TableView.setBounds(0, this.getHeight() - height, width, height);
-		}
+			m_TableView.setBounds(0, 0, width, height);
+            m_TableView.getHeading().setBounds(0, 0, width, 40);
+            m_TableView.getHeading().getComponent(0).setBounds(10, 0, width, 40);
+        }
 		
 		// Полето с менюто
 		{

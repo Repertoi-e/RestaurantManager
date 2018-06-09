@@ -13,10 +13,7 @@ public class TableStatus {
     private Rectangle m_StatusLabelBounds = new Rectangle();
 
     public TableStatus() {
-        Map<TextAttribute, Object> attribs = new HashMap<>();
-        attribs.put(TextAttribute.KERNING, TextAttribute.KERNING_ON);
-
-        m_NameLabelFont = new Font("SourceSansPro", Font.BOLD, 11).deriveFont(attribs);
+        m_NameLabelFont = new Font("SourceSansPro", Font.BOLD, 11);
     }
 
     void updateBounds(int halfWidth, int halfHeight) {

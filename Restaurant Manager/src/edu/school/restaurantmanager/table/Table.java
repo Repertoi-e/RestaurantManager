@@ -10,7 +10,6 @@ import edu.school.restaurantmanager.util.Utils;
 
 // Всяка маса е бутон с различен изглед.
 
-@SuppressWarnings("serial")
 public class Table extends JButton {
 
 	public TableUnavailableInfo UnavailableInfo = null;

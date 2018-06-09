@@ -34,6 +34,12 @@ Restaurant Manager/.project
 Restaurant Manager/Restaurant Manager.iml
 Restaurant Manager/.settings/
 
+guestcenter-ipad.png
+
+/out/
+*.ipr
+*.iws
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 /.metadata/

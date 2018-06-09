@@ -11,10 +11,10 @@ import javax.swing.JPanel;
 
 // Полето, където се показва менюто.
 
-@SuppressWarnings("serial")
 public class MenuView extends JPanel {
 
 	public static final Color BACKGROUND_COLOR = Color.decode("#718792");
+    public static final Color HEADING_COLOR = BACKGROUND_COLOR.darker();
 
 	JPanel m_Heading;
 
@@ -23,10 +23,9 @@ public class MenuView extends JPanel {
 		this.setLayout(null);
 
 		m_Heading = new JPanel();
-		m_Heading.setBackground(BACKGROUND_COLOR.darker());
+		m_Heading.setBackground(HEADING_COLOR);
 		m_Heading.setLayout(null);
 		{
-
 			Font font = new Font("SourceSansPro", Font.ITALIC | Font.BOLD, 25);
 			Map<TextAttribute, Object> fontAttribs = new HashMap<>(font.getAttributes());
 			fontAttribs.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
