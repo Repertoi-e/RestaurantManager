@@ -48,7 +48,7 @@ public class MainFrame extends JFrame {
 					
 			if (m_MenuView == null)
 			{
-				m_MenuView = new MenuView();
+				m_MenuView = new MenuView(this.getHeight());
 				m_ContentPane.add(m_MenuView);
 			}
 			

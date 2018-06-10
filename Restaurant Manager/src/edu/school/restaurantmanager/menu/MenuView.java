@@ -20,13 +20,13 @@ public class MenuView extends JPanel {
 
 	public static final Color BACKGROUND_COLOR = Color.decode("#718792");
     public static final Color HEADING_COLOR = BACKGROUND_COLOR.darker();
-
+    private int maxHeight;
 	JPanel m_Heading;
 
-	public MenuView() {
+	public MenuView(int maxHeight) {
 		this.setBackground(BACKGROUND_COLOR);
 		this.setLayout(null);
-
+		this.maxHeight = maxHeight;
 		m_Heading = new JPanel();
 		m_Heading.setBackground(HEADING_COLOR);
 		m_Heading.setLayout(null);
@@ -67,18 +67,29 @@ public class MenuView extends JPanel {
 		BufferedReader reader = new BufferedReader(fr);
 
 		String currLine;
+		int yMover = 0;
+		int xMover = 0;
+		int currX = x;
+		int currY = y;
 		while ((currLine = reader.readLine()) != null){
 			ArrayList<String> line = Arrays.stream(currLine.split("-")).collect(Collectors.toCollection(ArrayList::new));
 
 			// Всеки MenuItem има име, цена и URL с снимка.
 			MenuItem item = new MenuItem(line.get(0), Integer.parseInt(line.get(1)), new URL(line.get(2)));
 			// Тук е мястото и размера в менюто
-			item.setBounds(x, y, 135, 135);
+			item.setBounds(currX, currY, 135, 135);
 			// След setBounds, задължително updateBounds !!
 			item.updateBounds();
 			// MenuItem extend-ва JPanel
 			this.add(item);
-
+			yMover++;
+			currY = y+135*yMover;
+			if(currY >= maxHeight-100){
+				xMover++;
+				currX = x+ 135*xMover;
+				yMover = 0;
+				currY = y+135*yMover;
+			}
 		}
 	}
 
