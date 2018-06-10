@@ -47,6 +47,9 @@ public class MenuItem extends JPanel {
             m_Remove.setBackground(Color.red);
             m_Remove.setFont(buttonFont);
         }
+        m_Remove.addActionListener(e -> {
+
+        });
         this.add(m_Remove);
     }
 

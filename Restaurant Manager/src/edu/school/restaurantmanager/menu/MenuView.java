@@ -3,8 +3,13 @@ package edu.school.restaurantmanager.menu;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
+import java.io.*;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -38,14 +43,43 @@ public class MenuView extends JPanel {
 		}
 		this.add(m_Heading);
 
-		// Всеки MenuItem има име, цена и URL с снимка.
-		MenuItem item = new MenuItem("Пържени картофки", 320, MenuView.class.getResource("french_fries.png"));
-		// Тук е мястото и размера в менюто
-		item.setBounds(10,50, 135, 135);
-		// След setBounds, задължително updateBounds !!
-		item.updateBounds();
-		// MenuItem extend-ва JPanel
-		this.add(item);
+
+
+		try {
+			showItems(10,50);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void addItem(String name, int price, URL url) throws Exception {
+		File f = new File("Restaurant Manager\\src\\edu\\school\\restaurantmanager\\menu\\menu_items.txt");
+		FileWriter fw = new FileWriter(f,true);
+		BufferedWriter writer = new BufferedWriter(fw);
+		PrintWriter out = new PrintWriter(fw);
+		out.println(String.format("%s-%d-%s", name, price, String.valueOf(url)));
+		out.close();
+	}
+
+	private void showItems(int x, int y) throws Exception {
+		File f = new File("Restaurant Manager\\src\\edu\\school\\restaurantmanager\\menu\\menu_items.txt");
+		FileReader fr = new FileReader(f);
+		BufferedReader reader = new BufferedReader(fr);
+
+		String currLine;
+		while ((currLine = reader.readLine()) != null){
+			ArrayList<String> line = Arrays.stream(currLine.split("-")).collect(Collectors.toCollection(ArrayList::new));
+
+			// Всеки MenuItem има име, цена и URL с снимка.
+			MenuItem item = new MenuItem(line.get(0), Integer.parseInt(line.get(1)), new URL(line.get(2)));
+			// Тук е мястото и размера в менюто
+			item.setBounds(x, y, 135, 135);
+			// След setBounds, задължително updateBounds !!
+			item.updateBounds();
+			// MenuItem extend-ва JPanel
+			this.add(item);
+
+		}
 	}
 
 	public JPanel getHeading() { return m_Heading; }
