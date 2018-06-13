@@ -1,5 +1,9 @@
 package edu.school.restaurantmanager.menu;
 
+import edu.school.restaurantmanager.MainFrame;
+import edu.school.restaurantmanager.util.ResourceLoader;
+import edu.school.restaurantmanager.util.Utils;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
@@ -9,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.swing.JLabel;
@@ -42,18 +48,19 @@ public class MenuView extends JPanel {
 			m_Heading.add(label);
 		}
 		this.add(m_Heading);
-
-
-
-		try {
-			showItems(10,50);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
+	public void updateBounds(int windowWidth, int windowHeight)
+    {
+        int width = Utils.percent(windowWidth, 40);
+        int height = windowHeight;
+
+        this.setBounds(windowWidth - width, 0, width, height);
+        m_Heading.setBounds(0, 0, width, 40);
+    }
+
 	private void addItem(String name, int price, URL url) throws Exception {
-		File f = new File("Restaurant Manager\\src\\edu\\school\\restaurantmanager\\menu\\menu_items.txt");
+		File f = new File(ResourceLoader.getResource("/res/menu_items.txt").getFile());
 		FileWriter fw = new FileWriter(f,true);
 		BufferedWriter writer = new BufferedWriter(fw);
 		PrintWriter out = new PrintWriter(fw);
@@ -61,37 +68,47 @@ public class MenuView extends JPanel {
 		out.close();
 	}
 
-	private void showItems(int x, int y) throws Exception {
-		File f = new File("Restaurant Manager\\src\\edu\\school\\restaurantmanager\\menu\\menu_items.txt");
-		FileReader fr = new FileReader(f);
-		BufferedReader reader = new BufferedReader(fr);
+	public void showItems() {
+		try {
+            File f = MainFrame.getWorkFile().getFile();
+            FileReader fr = new FileReader(f);
+            BufferedReader reader = new BufferedReader(fr);
 
-		String currLine;
-		int yMover = 0;
-		int xMover = 0;
-		int currX = x;
-		int currY = y;
-		while ((currLine = reader.readLine()) != null){
-			ArrayList<String> line = Arrays.stream(currLine.split("-")).collect(Collectors.toCollection(ArrayList::new));
+            String currLine;
+            int yMover = 0;
+            int xMover = 0;
+            int currX = 10;
+            int currY = 50;
+            System.out.println("--------------------Loading file:");
+            while ((currLine = reader.readLine()) != null){
+                Pattern pattern = Pattern.compile("PRODUCT:\\s*/name:(.+?(?=/price:))/price:([0-9]*)\\s*/file:(.*)");
+                Matcher matcher = pattern.matcher(currLine);
+                if (matcher.find()) {
+                    String name = matcher.group(1).trim(); // trim() премахва разстояния накрая на името
+                    int price = Integer.parseInt(matcher.group(2));
+                    String image = matcher.group(3).trim();
 
-			// Всеки MenuItem има име, цена и URL с снимка.
-			MenuItem item = new MenuItem(line.get(0), Integer.parseInt(line.get(1)), new URL(line.get(2)));
-			// Тук е мястото и размера в менюто
-			item.setBounds(currX, currY, 135, 135);
-			// След setBounds, задължително updateBounds !!
-			item.updateBounds();
-			// MenuItem extend-ва JPanel
-			this.add(item);
-			yMover++;
-			currY = y+135*yMover;
-			if(currY >= maxHeight-100){
-				xMover++;
-				currX = x+ 135*xMover;
-				yMover = 0;
-				currY = y+135*yMover;
-			}
-		}
+                    System.out.println("Name: \"" + name + "\"" + ", Price: " + price + ", Image: \"" + image + "\"");
+                }
+                //ArrayList<String> line = Arrays.stream(currLine.split("-")).collect(Collectors.toCollection(ArrayList::new));
+//
+                //// Всеки MenuItem има име, цена и URL с снимка.
+                //MenuItem item = new MenuItem(line.get(0), Integer.parseInt(line.get(1)), new URL(line.get(2)));
+                //// Тук е мястото и размера в менюто
+                //item.setBounds(currX, currY, 135, 135);
+                //// След setBounds, задължително updateBounds !!
+                //item.updateBounds();
+                //// MenuItem extend-ва JPanel
+                //this.add(item);
+                //yMover++;
+                //currY = y + 135 * yMover;
+                //if(currY >= maxHeight - 100){
+                //	xMover++;
+                //	currX = x + 135 * xMover;
+                //	yMover = 0;
+                //	currY = y + 135 * yMover;
+                //}
+            }
+        } catch (Exception e ) { e.printStackTrace(); }
 	}
-
-	public JPanel getHeading() { return m_Heading; }
 }

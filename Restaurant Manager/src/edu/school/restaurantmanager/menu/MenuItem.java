@@ -17,7 +17,6 @@ public class MenuItem extends JPanel {
 
     private MenuItemGraphics m_Graphics;
     private MenuItemButton m_Add, m_Remove;
-    //
 
     MenuItem(String name, int price, URL imageURL) {
         this.setLayout(null);
@@ -33,20 +32,22 @@ public class MenuItem extends JPanel {
         Font buttonFont = new Font("SourceSansPro", Font.BOLD, 20);
         m_Add = new MenuItemButton();
         {
-            m_Add.setText("+++++++++++++++++++++++++++++++++++++");
+            m_Add.setText("+");
             m_Add.setForeground(Color.decode("#eeeeee"));
             m_Add.setBackground(Color.green);
             m_Add.setFont(buttonFont);
         }
+        m_Add.setVisible(false);
         this.add(m_Add);
 
         m_Remove = new MenuItemButton();
         {
-            m_Remove.setText("-++++++++++++++++++++++++++++++++++++");
+            m_Remove.setText("-");
             m_Remove.setForeground(Color.decode("#eeeeee"));
             m_Remove.setBackground(Color.red);
             m_Remove.setFont(buttonFont);
         }
+        m_Remove.setVisible(false);
         m_Remove.addActionListener(e -> {
 
         });
@@ -69,10 +70,16 @@ public class MenuItem extends JPanel {
     void updateBounds() {
         m_Graphics.updateBounds(this.getWidth() / 2, (int) ((double)this.getHeight() / 2.35));
 
-        int buttonSize = 30;
+        int buttonSize = 25;
 
         m_Add.setBounds(10, this.getHeight() - buttonSize - 10, buttonSize, buttonSize);
         m_Remove.setBounds(this.getWidth() - buttonSize - 10, this.getHeight() - buttonSize - 10, buttonSize, buttonSize);
+    }
+
+    void setButtonsVisible(boolean visible)
+    {
+        m_Add.setVisible(visible);
+        m_Remove.setVisible(visible);
     }
 
     public String getName() { return m_Name; }

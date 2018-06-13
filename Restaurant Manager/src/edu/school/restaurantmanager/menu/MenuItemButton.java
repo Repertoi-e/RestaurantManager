@@ -14,6 +14,6 @@ public class MenuItemButton extends JButton {
         g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
         g.setColor(this.getForeground());
-        Utils.drawCenteredString(g, this.getText(), this.getBounds(), this.getFont());
+        Utils.drawCenteredString(g, this.getText(), new Rectangle(0, 0, this.getWidth(), this.getHeight()), this.getFont());
     }
 }

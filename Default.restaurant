@@ -1,0 +1,25 @@
+﻿# Дефиницията на продукт е следната:
+#
+# PRODUCT: /name:{Име}     /price:{Цена}     /file:{Снимка}
+#
+# Снимката трябва да се намира в папка "images" в същата
+# директория като този файл:
+#
+#	.
+#	+-- images/
+#	|   +-- food.png
+#	+-- Default.restaurant
+#		
+
+PRODUCT: /name:Пържени картофки    /price:320    /file:french_fries.png
+PRODUCT: /name:Пържени картофки    /price:320    /file:french_fries.png
+PRODUCT: /name:Пържени картофки    /price:320    /file:french_fries.png
+PRODUCT: /name:Пържени картофки    /price:320    /file:french_fries.png
+PRODUCT: /name:Пържени картофки    /price:320    /file:french_fries.png
+
+
+
+# Пържени картофки-320-file:/res/french_fries.png
+# Пържени картофки-320-file:/res/french_fries.png
+# Пържени картофки-320-file:/res/french_fries.png
+# Пържени картофки-320-file:/res/french_fries.png
