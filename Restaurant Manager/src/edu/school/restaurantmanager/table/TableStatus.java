@@ -1,5 +1,6 @@
 package edu.school.restaurantmanager.table;
 
+import edu.school.restaurantmanager.GlobalColors;
 import edu.school.restaurantmanager.util.Utils;
 
 import java.awt.*;
@@ -38,7 +39,7 @@ public class TableStatus {
             g2d.setColor(new Color(0.0f, 0.0f, 0.0f, 0.15f));
             g2d.fillRect(m_StatusLabelBounds.x, m_StatusLabelBounds.y, m_StatusLabelBounds.width, m_StatusLabelBounds.height);
 
-            g2d.setColor(Color.decode("#eeeeee"));
+            g2d.setColor(GlobalColors.TEXT_COLOR);
             Utils.drawCenteredString(g2d, Utils.getBookHourAsString(info), m_StatusLabelBounds, m_NameLabelFont);
 
             g2d.translate(0, 20);
@@ -46,7 +47,7 @@ public class TableStatus {
             g2d.setColor(new Color(0.0f, 0.0f, 0.0f, 0.15f));
             g2d.fillRect(m_StatusLabelBounds.x, m_StatusLabelBounds.y, m_StatusLabelBounds.width, m_StatusLabelBounds.height);
 
-            g2d.setColor(Color.decode("#eeeeee"));
+            g2d.setColor(GlobalColors.TEXT_COLOR);
             Utils.drawCenteredString(g2d, Utils.getPriceAsString(info.Order.Total), m_StatusLabelBounds, m_NameLabelFont);
             g2d.translate(0, -10);
         } else {

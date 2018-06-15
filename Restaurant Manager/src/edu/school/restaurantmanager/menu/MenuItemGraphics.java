@@ -1,5 +1,6 @@
 package edu.school.restaurantmanager.menu;
 
+import edu.school.restaurantmanager.GlobalColors;
 import edu.school.restaurantmanager.ui.UILabel;
 import edu.school.restaurantmanager.util.Utils;
 
@@ -16,10 +17,10 @@ class MenuItemGraphics {
         m_Parent = parent;
 
         m_Name = new UILabel(new Font("SourceSansPro", Font.BOLD, 100), m_Parent.getName(), 1.9f);
-        m_Name.setForeground(Color.decode("#eeeeee"));
+        m_Name.setForeground(GlobalColors.TEXT_COLOR);
 
         m_Price = new UILabel(new Font("SourceSansPro", Font.BOLD, 100), 1.3f);
-        m_Price.setForeground(Color.decode("#eeeeee"));
+        m_Price.setForeground(GlobalColors.TEXT_COLOR);
     }
 
     void updateBounds(int halfWidth, int halfHeight) {

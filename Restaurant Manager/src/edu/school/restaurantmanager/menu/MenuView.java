@@ -1,13 +1,16 @@
 package edu.school.restaurantmanager.menu;
 
+import edu.school.restaurantmanager.GlobalColors;
 import edu.school.restaurantmanager.MainFrame;
 import edu.school.restaurantmanager.util.ResourceLoader;
 import edu.school.restaurantmanager.util.Utils;
+import edu.school.restaurantmanager.workfile.WorkFile;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,17 +27,15 @@ import javax.swing.JPanel;
 
 public class MenuView extends JPanel {
 
-	public static final Color BACKGROUND_COLOR = Color.decode("#718792");
-    public static final Color HEADING_COLOR = BACKGROUND_COLOR.darker();
     private int maxHeight;
 	JPanel m_Heading;
 
 	public MenuView(int maxHeight) {
-		this.setBackground(BACKGROUND_COLOR);
+		this.setBackground(GlobalColors.MENUVIEW_BG_COLOR);
 		this.setLayout(null);
 		this.maxHeight = maxHeight;
 		m_Heading = new JPanel();
-		m_Heading.setBackground(HEADING_COLOR);
+		m_Heading.setBackground(GlobalColors.MENUVIEW_HEAD_COLOR);
 		m_Heading.setLayout(null);
 		{
 			Font font = new Font("SourceSansPro", Font.ITALIC | Font.BOLD, 25);
@@ -44,7 +45,7 @@ public class MenuView extends JPanel {
 			JLabel label = new JLabel("Mеню");
 			label.setBounds(10, 10, 100, 25);
 			label.setFont(font.deriveFont(fontAttribs));
-			label.setForeground(Color.decode("#eeeeee"));
+			label.setForeground(GlobalColors.TEXT_COLOR);
 			m_Heading.add(label);
 		}
 		this.add(m_Heading);
@@ -59,56 +60,49 @@ public class MenuView extends JPanel {
         m_Heading.setBounds(0, 0, width, 40);
     }
 
-	private void addItem(String name, int price, URL url) throws Exception {
-		File f = new File(ResourceLoader.getResource("/res/menu_items.txt").getFile());
-		FileWriter fw = new FileWriter(f,true);
-		BufferedWriter writer = new BufferedWriter(fw);
-		PrintWriter out = new PrintWriter(fw);
-		out.println(String.format("%s-%d-%s", name, price, String.valueOf(url)));
-		out.close();
-	}
+	public void updateItems(File workFileContext, String newItems) {
+	    int x = 10;
+	    int y = 50;
 
-	public void showItems() {
-		try {
-            File f = MainFrame.getWorkFile().getFile();
-            FileReader fr = new FileReader(f);
-            BufferedReader reader = new BufferedReader(fr);
+	    int yMover = 0;
+	    int xMover = 0;
+	    int currX = 10;
+	    int currY = 50;
 
-            String currLine;
-            int yMover = 0;
-            int xMover = 0;
-            int currX = 10;
-            int currY = 50;
-            System.out.println("--------------------Loading file:");
-            while ((currLine = reader.readLine()) != null){
-                Pattern pattern = Pattern.compile("PRODUCT:\\s*/name:(.+?(?=/price:))/price:([0-9]*)\\s*/file:(.*)");
-                Matcher matcher = pattern.matcher(currLine);
-                if (matcher.find()) {
-                    String name = matcher.group(1).trim(); // trim() премахва разстояния накрая на името
-                    int price = Integer.parseInt(matcher.group(2));
-                    String image = matcher.group(3).trim();
+	    for (String currLine : newItems.split("\\r?\\n")) {
+	        // Пропуска коментари.
+	        if (currLine.isEmpty() || currLine.startsWith("#"))
+	            continue;
 
-                    System.out.println("Name: \"" + name + "\"" + ", Price: " + price + ", Image: \"" + image + "\"");
+	        Pattern pattern = Pattern.compile("PRODUCT:\\s*/name:(.+?(?=/price:))/price:([0-9]*)\\s*/image:(.*)");
+	        Matcher matcher = pattern.matcher(currLine);
+	        if (matcher.find()) {
+                String name = matcher.group(1).trim(); // trim() премахва разстояния накрая на името
+                int price = Integer.parseInt(matcher.group(2));
+                String image = matcher.group(3).trim(); // trim() премахва разстояния накрая на името
+
+                // Всеки MenuItem има име, цена и файл - снимка.
+                MenuItem item = new MenuItem(name, price, new File(workFileContext.getParentFile().toPath().resolve("images").toString() + "\\" + image));
+                // Тук е мястото и размера в менюто
+                item.setBounds(currX, currY, 135, 135);
+                // След setBounds, задължително updateBounds !!
+                item.updateBounds();
+                // MenuItem extend-ва JPanel
+                this.add(item);
+                yMover++;
+                currY = y + 140 * yMover;
+                if(currY >= maxHeight - 100) {
+                    xMover++;
+                    currX = x + 140 * xMover;
+                    yMover = 0;
+                    currY = y + 140 * yMover;
                 }
-                //ArrayList<String> line = Arrays.stream(currLine.split("-")).collect(Collectors.toCollection(ArrayList::new));
-//
-                //// Всеки MenuItem има име, цена и URL с снимка.
-                //MenuItem item = new MenuItem(line.get(0), Integer.parseInt(line.get(1)), new URL(line.get(2)));
-                //// Тук е мястото и размера в менюто
-                //item.setBounds(currX, currY, 135, 135);
-                //// След setBounds, задължително updateBounds !!
-                //item.updateBounds();
-                //// MenuItem extend-ва JPanel
-                //this.add(item);
-                //yMover++;
-                //currY = y + 135 * yMover;
-                //if(currY >= maxHeight - 100){
-                //	xMover++;
-                //	currX = x + 135 * xMover;
-                //	yMover = 0;
-                //	currY = y + 135 * yMover;
-                //}
             }
-        } catch (Exception e ) { e.printStackTrace(); }
+        }
+
+        // След като са добавени новите продукти,
+        // караме Java да ги нарисува.
+        this.invalidate();
+	    this.repaint();
 	}
 }

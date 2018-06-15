@@ -6,6 +6,7 @@ import java.time.LocalTime;
 
 import javax.swing.JButton;
 
+import edu.school.restaurantmanager.GlobalColors;
 import edu.school.restaurantmanager.util.Utils;
 
 // Всяка маса е бутон с различен изглед.
@@ -67,7 +68,7 @@ public class Table extends JButton {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		g.setColor(TableView.BACKGROUND_COLOR);
+		g.setColor(GlobalColors.TABLEVIEW_BG_COLOR);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
 		g.translate(this.getWidth() / 2, this.getHeight() / 2);

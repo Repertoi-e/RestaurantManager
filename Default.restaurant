@@ -11,11 +11,10 @@
 #	+-- Default.restaurant
 #		
 
-PRODUCT: /name:Пържени картофки    /price:320    /file:french_fries.png
-PRODUCT: /name:Пържени картофки    /price:320    /file:french_fries.png
-PRODUCT: /name:Пържени картофки    /price:320    /file:french_fries.png
-PRODUCT: /name:Пържени картофки    /price:320    /file:french_fries.png
-PRODUCT: /name:Пържени картофки    /price:320    /file:french_fries.png
+PRODUCT: /name:Пържени картофки    /price:320    /image:french_fries.png
+PRODUCT: /name:Пържени картофки    /price:320    /image:french_fries.png
+PRODUCT: /name:Пържени картофки    /price:320    /image:french_fries.png
+PRODUCT: /name:Пържени картофки    /price:320    /image:french_fries.png
 
 
 

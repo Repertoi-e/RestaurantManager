@@ -1,8 +1,12 @@
 package edu.school.restaurantmanager.menu;
 
+import edu.school.restaurantmanager.GlobalColors;
+
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -18,11 +22,11 @@ public class MenuItem extends JPanel {
     private MenuItemGraphics m_Graphics;
     private MenuItemButton m_Add, m_Remove;
 
-    MenuItem(String name, int price, URL imageURL) {
+    MenuItem(String name, int price, File image) {
         this.setLayout(null);
         this.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 3));
 
-        setImage(imageURL);
+        setImage(image);
 
         setName(name);
         setPrice(price);
@@ -33,7 +37,7 @@ public class MenuItem extends JPanel {
         m_Add = new MenuItemButton();
         {
             m_Add.setText("+");
-            m_Add.setForeground(Color.decode("#eeeeee"));
+            m_Add.setForeground(GlobalColors.TEXT_COLOR);
             m_Add.setBackground(Color.green);
             m_Add.setFont(buttonFont);
         }
@@ -43,7 +47,7 @@ public class MenuItem extends JPanel {
         m_Remove = new MenuItemButton();
         {
             m_Remove.setText("-");
-            m_Remove.setForeground(Color.decode("#eeeeee"));
+            m_Remove.setForeground(GlobalColors.TEXT_COLOR);
             m_Remove.setBackground(Color.red);
             m_Remove.setFont(buttonFont);
         }
@@ -97,11 +101,12 @@ public class MenuItem extends JPanel {
         repaint();
     }
 
-    public void setImage(URL imageURL) {
+    public void setImage(File image) {
         try {
-            m_Image = ImageIO.read(imageURL);
+            m_Image = ImageIO.read(image);
         } catch (IOException e) {
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null, image.toString(), "Файлът не е намерен!", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

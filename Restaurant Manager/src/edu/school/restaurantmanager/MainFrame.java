@@ -1,7 +1,6 @@
 package edu.school.restaurantmanager;
 
 import edu.school.restaurantmanager.menu.MenuView;
-import edu.school.restaurantmanager.workfile.DirWatcher;
 import edu.school.restaurantmanager.workfile.WorkFile;
 import edu.school.restaurantmanager.table.TableView;
 import edu.school.restaurantmanager.util.Fonts;
@@ -15,11 +14,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class MainFrame extends JFrame {
 	
@@ -31,55 +27,37 @@ public class MainFrame extends JFrame {
 	private JPanel m_ContentPane;
 	private TableView m_TableView = null;
 	private MenuView m_MenuView = null;
-    private JButton m_OpenWorkFileButton = null;
+    private JButton m_EditWorkFileButton = null;
     private WorkFile m_WorkFile = new WorkFile();
-    private DirWatcher m_DirWatcher;
-    final JFileChooser m_FileChooser = new JFileChooser();
-
-    private void chooseWorkFile() {
-        int result = m_FileChooser.showOpenDialog(this);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File file = m_FileChooser.getSelectedFile();
-            System.out.println("Changing work file: " + file.getAbsolutePath());
-            m_WorkFile.updateFile(file);
-        } else {
-            JOptionPane.showMessageDialog(null, "Моля избери файл с настройки.", "Грешка", JOptionPane.ERROR_MESSAGE);
-            System.exit(-1);
-        }
-    }
 
 	// При първо пускане или когато размерът на прозореца се промени
 	public void rebuildUI() {
-        // Бутон за файла
+        // Бутон за work file-а
         {
-            int buttonSize = 40;
-            if (m_OpenWorkFileButton == null)
+            int buttonSize = 30;
+            if (m_EditWorkFileButton == null)
             {
                 BufferedImage icon = null;
                 try
                 {
-                    icon = ImageIO.read(WorkFile.class.getResource("open-icon.png"));
+                    icon = ImageIO.read(WorkFile.class.getResource("edit-icon.png"));
                 } catch (Exception e) { /* ¯\_(ツ)_/¯ */}
 
-                m_OpenWorkFileButton = new JButton();
+                m_EditWorkFileButton = new JButton();
 
-                m_OpenWorkFileButton.setIcon(new ImageIcon(icon.getScaledInstance(buttonSize - 5, -1, java.awt.Image.SCALE_SMOOTH)));
-                m_OpenWorkFileButton.setBackground(TableView.BACKGROUND_COLOR);
-                m_OpenWorkFileButton.addActionListener(e -> {
-                    int result = m_FileChooser.showOpenDialog(this);
-                    if (result == JFileChooser.APPROVE_OPTION)
-                    {
-                        File file = m_FileChooser.getSelectedFile();
-                        System.out.println("Changing work file: " + file.getAbsolutePath());
-                        m_WorkFile.updateFile(file);
-                    }
-                    else
-                        System.out.println("No file chosen!");
+                if (icon != null)
+                    m_EditWorkFileButton.setIcon(new ImageIcon(icon.getScaledInstance(buttonSize - 5, -1, Image.SCALE_SMOOTH)));
+                m_EditWorkFileButton.setBackground(GlobalColors.TABLEVIEW_BG_COLOR);
+                m_EditWorkFileButton.addActionListener(e ->
+                {
+                    if (m_WorkFile.getFile() == null)
+                        m_WorkFile.chooseWorkFile();
+                    m_WorkFile.setVisible(true);
                 });
-                m_ContentPane.add(m_OpenWorkFileButton);
+                m_ContentPane.add(m_EditWorkFileButton);
             }
 
-            m_OpenWorkFileButton.setBounds(10, this.getHeight() - 8 - 2 * buttonSize, buttonSize, buttonSize);
+            m_EditWorkFileButton.setBounds(this.getWidth() - buttonSize * 2 + 7, 5, buttonSize, buttonSize);
         }
 
 		// Полето с масите
@@ -106,20 +84,11 @@ public class MainFrame extends JFrame {
 	private MainFrame() {
 		Instance = this;
 
-        try {
-            m_DirWatcher = new DirWatcher();
-            // Взимаме директорията на файла с настройките.
-            ExecutorService executor = Executors.newSingleThreadExecutor();
-            executor.submit(m_DirWatcher);
-            executor.shutdown();
-        } catch (Exception e) { e.printStackTrace(); }
-
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Restaurant files", "restaurant");
-        m_FileChooser.setFileFilter(filter);
-        chooseWorkFile();
-
 		Fonts.registerFonts();
-		
+
+        m_WorkFile.setVisible(false);
+
+        this.setTitle("Restaurant manager"); // Колко време седим без заглавие!!!
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.setSize(new Dimension(
 				MainFrame.Width, 
@@ -138,9 +107,6 @@ public class MainFrame extends JFrame {
 
     public static WorkFile getWorkFile() {
         return Instance.m_WorkFile;
-    }
-    public static DirWatcher getDirWatcher() {
-        return Instance.m_DirWatcher;
     }
     public static MenuView getMenuView()
     {

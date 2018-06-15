@@ -1,5 +1,6 @@
 package edu.school.restaurantmanager.table;
 
+import edu.school.restaurantmanager.GlobalColors;
 import edu.school.restaurantmanager.util.Utils;
 
 import java.awt.*;
@@ -13,20 +14,17 @@ import javax.swing.*;
 
 public class TableView extends JPanel {
 
-	public static final Color BACKGROUND_COLOR = Color.decode("#455a64");
-    public static final Color HEADING_COLOR = Color.decode("#1c313a");
-
     JPanel m_Heading;
     TableViewOrder m_OrderPanel;
 
     boolean m_EditMode = false;
 	
 	public TableView() {
-		this.setBackground(BACKGROUND_COLOR);
+		this.setBackground(GlobalColors.TABLEVIEW_BG_COLOR);
 		this.setLayout(null);
 
         m_Heading = new JPanel();
-        m_Heading.setBackground(HEADING_COLOR);
+        m_Heading.setBackground(GlobalColors.TABLEVIEW_HEAD_COLOR);
         m_Heading.setLayout(null);
         {
             Font font = new Font("SourceSansPro", Font.ITALIC | Font.BOLD, 25);
@@ -35,7 +33,7 @@ public class TableView extends JPanel {
 
             JLabel label = new JLabel("Маси");
             label.setFont(font.deriveFont(fontAttribs));
-            label.setForeground(Color.decode("#eeeeee"));
+            label.setForeground(GlobalColors.TEXT_COLOR);
             m_Heading.add(label);
         }
         this.add(m_Heading);
