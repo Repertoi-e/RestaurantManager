@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class Fonts {
 
-    public static Font createFont(String resource) throws Exception {
+    private static Font createFont(String resource) throws Exception {
         Font font = Font.createFont(Font.TRUETYPE_FONT, MainFrame.class.getResourceAsStream(resource));
 
         Map<TextAttribute, Object> attribs = new HashMap<>();

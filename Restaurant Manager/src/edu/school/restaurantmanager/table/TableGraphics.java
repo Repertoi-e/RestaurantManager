@@ -4,16 +4,12 @@ import edu.school.restaurantmanager.GlobalColors;
 import edu.school.restaurantmanager.util.Utils;
 
 import java.awt.*;
-import java.awt.font.TextAttribute;
-import java.util.HashMap;
-import java.util.Map;
 
-public class TableStatus {
-
+class TableGraphics {
     private Font m_NameLabelFont;
     private Rectangle m_StatusLabelBounds = new Rectangle();
 
-    public TableStatus() {
+    TableGraphics() {
         m_NameLabelFont = new Font("SourceSansPro", Font.BOLD, 11);
     }
 
@@ -31,16 +27,16 @@ public class TableStatus {
     void draw(Graphics2D g2d, Table table) {
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-        TableUnavailableInfo info = table.UnavailableInfo;
+        TableOrder order = table.Order;
 
-        if (info != null) {
+        if (order != null) {
             g2d.translate(0, -10);
 
             g2d.setColor(new Color(0.0f, 0.0f, 0.0f, 0.15f));
             g2d.fillRect(m_StatusLabelBounds.x, m_StatusLabelBounds.y, m_StatusLabelBounds.width, m_StatusLabelBounds.height);
 
             g2d.setColor(GlobalColors.TEXT_COLOR);
-            Utils.drawCenteredString(g2d, Utils.getBookHourAsString(info), m_StatusLabelBounds, m_NameLabelFont);
+            Utils.drawCenteredString(g2d, Utils.getBookHourAsString(order), m_StatusLabelBounds, m_NameLabelFont);
 
             g2d.translate(0, 20);
 
@@ -48,7 +44,7 @@ public class TableStatus {
             g2d.fillRect(m_StatusLabelBounds.x, m_StatusLabelBounds.y, m_StatusLabelBounds.width, m_StatusLabelBounds.height);
 
             g2d.setColor(GlobalColors.TEXT_COLOR);
-            Utils.drawCenteredString(g2d, Utils.getPriceAsString(info.Order.Total), m_StatusLabelBounds, m_NameLabelFont);
+            Utils.drawCenteredString(g2d, Utils.getPriceAsString(order.Total), m_StatusLabelBounds, m_NameLabelFont);
             g2d.translate(0, -10);
         } else {
             g2d.setColor(new Color(0.0f, 0.0f, 0.0f, 0.15f));

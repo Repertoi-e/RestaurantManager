@@ -8,7 +8,6 @@ import java.awt.*;
 import java.awt.geom.Point2D;
 
 class MenuItemGraphics {
-
     private MenuItem m_Parent;
     private UILabel m_Name, m_Price;
     private RadialGradientPaint m_RadialPaint;

@@ -38,7 +38,7 @@ public class MenuItem extends JPanel {
         {
             m_Add.setText("+");
             m_Add.setForeground(GlobalColors.TEXT_COLOR);
-            m_Add.setBackground(Color.green);
+            m_Add.setBackground(GlobalColors.MENUITEM_ADD_BG);
             m_Add.setFont(buttonFont);
         }
         m_Add.setVisible(false);
@@ -48,7 +48,7 @@ public class MenuItem extends JPanel {
         {
             m_Remove.setText("-");
             m_Remove.setForeground(GlobalColors.TEXT_COLOR);
-            m_Remove.setBackground(Color.red);
+            m_Remove.setBackground(GlobalColors.MENUITEM_REMOVE_BG);
             m_Remove.setFont(buttonFont);
         }
         m_Remove.setVisible(false);
@@ -56,6 +56,8 @@ public class MenuItem extends JPanel {
 
         });
         this.add(m_Remove);
+
+        setButtonsVisible(true);
     }
 
     @Override

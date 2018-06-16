@@ -80,19 +80,25 @@ public class WorkFile extends JFrame {
 
     public File getFile() { return m_File; }
 
+    // !!!
+    // Може да няма промени, но е сложно да се провери, затова просто питаме всеки път.
+    public void askForUnsavedChanges() {
+        if (m_File != null)
+        {
+            int dialogResult = JOptionPane.showConfirmDialog(this, "Да бъдат ли запазени промените в файла?", "Незапазени промени.", JOptionPane.YES_NO_OPTION);
+            if(dialogResult == 0) {
+                try {
+                    Files.write(m_File.toPath(), m_TextArea.getText().getBytes());
+                } catch (IOException e) { e.printStackTrace(); }
+            }
+        }
+    }
+
     public void chooseWorkFile() {
         int result = m_FileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION)
         {
-            if (m_File != null)
-            {
-                int dialogResult = JOptionPane.showConfirmDialog(this, "Да бъдат ли запазени промените в стария файл?", "Променен файл", JOptionPane.YES_NO_OPTION);
-                if(dialogResult == 0) {
-                    try {
-                        Files.write(m_File.toPath(), m_TextArea.getText().getBytes());
-                    } catch (IOException e) { e.printStackTrace(); }
-                }
-            }
+            askForUnsavedChanges();
             m_File = m_FileChooser.getSelectedFile();
             try {
                 m_TextArea.setText(new String(Files.readAllBytes(m_File.toPath())));

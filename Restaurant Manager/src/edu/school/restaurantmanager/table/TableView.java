@@ -1,6 +1,7 @@
 package edu.school.restaurantmanager.table;
 
 import edu.school.restaurantmanager.GlobalColors;
+import edu.school.restaurantmanager.MainFrame;
 import edu.school.restaurantmanager.util.Utils;
 
 import java.awt.*;
@@ -14,10 +15,13 @@ import javax.swing.*;
 
 public class TableView extends JPanel {
 
-    JPanel m_Heading;
-    TableViewOrder m_OrderPanel;
+    private JPanel m_Heading;
+    private TableViewOrder m_OrderPanel;
 
-    boolean m_EditMode = false;
+    private final TableMover m_TableMover = new TableMover();
+    private final TableResizer m_TableResizer = new TableResizer();
+
+    private boolean m_Editing = false;
 	
 	public TableView() {
 		this.setBackground(GlobalColors.TABLEVIEW_BG_COLOR);
@@ -45,21 +49,52 @@ public class TableView extends JPanel {
 		{
 			yellow.Top = Color.decode("#fdd835");
 			yellow.Chair = Color.decode("#fbc02d");
-			yellow.ChairShadow = Color.decode("#e8b228");
+			yellow.ChairShadow = yellow.Chair.darker(); //Color.decode("#e8b228");
 		}
 
-		this.add(new Table(100, 100, 180, 250, yellow));
-		this.add(new Table(300, 350, 90, 90, yellow));
+        setEditing(false);
+
+        this.add(new Table(100, 100, 180, 250, yellow));
+        this.add(new Table(300, 350, 90, 90, yellow));
 	}
 
 	public void updateBounds(int windowWidth, int windowHeight) {
         // Вместо hard-code-нат размер, взимаме процент от размера на целия прозорец.
         int width = Utils.percent(windowWidth, 60);
-        int height = windowHeight;
 
-        setBounds(0, 0, width, height);
+        setBounds(0, 0, width, windowHeight);
         m_Heading.setBounds(0, 0, width, 40);
         m_Heading.getComponent(0).setBounds(10, 0, width, 40);
+    }
+
+    public boolean isEditing()
+    {
+        return m_Editing;
+    }
+
+    public void setEditing(boolean editing)
+    {
+        m_Editing = editing;
+        if (m_Editing) {
+            // Минава през всички маси
+            for (int i = 2; i < this.getComponentCount(); i++) {
+                Component table = this.getComponent(i);
+                table.addMouseListener(m_TableMover);
+                table.addMouseListener(m_TableResizer);
+                table.addMouseMotionListener(m_TableResizer);
+            }
+            MainFrame.getEditTableLayoutButton().setBackground(GlobalColors.EDITTABLELAYOUT_ON);
+            MainFrame.getAddTableButton().setVisible(true);
+        } else {
+            for (int i = 2; i < this.getComponentCount(); i++) {
+                Component table = this.getComponent(i);
+                table.removeMouseListener(m_TableMover);
+                table.removeMouseListener(m_TableResizer);
+                table.removeMouseMotionListener(m_TableResizer);
+            }
+            MainFrame.getEditTableLayoutButton().setBackground(GlobalColors.EDITTABLELAYOUT_OFF);
+            MainFrame.getAddTableButton().setVisible(false);
+        }
     }
 
     public TableViewOrder getOrderView() { return m_OrderPanel; }

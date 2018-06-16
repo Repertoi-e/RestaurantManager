@@ -1,6 +1,8 @@
 package edu.school.restaurantmanager;
 
+import edu.school.restaurantmanager.menu.MenuItemButton;
 import edu.school.restaurantmanager.menu.MenuView;
+import edu.school.restaurantmanager.util.Utils;
 import edu.school.restaurantmanager.workfile.WorkFile;
 import edu.school.restaurantmanager.table.TableView;
 import edu.school.restaurantmanager.util.Fonts;
@@ -27,26 +29,25 @@ public class MainFrame extends JFrame {
 	private JPanel m_ContentPane;
 	private TableView m_TableView = null;
 	private MenuView m_MenuView = null;
-    private JButton m_EditWorkFileButton = null;
+    private JButton m_EditWorkFileButton = null, m_EditTableLayoutButton = null, m_AddTableButton;
     private WorkFile m_WorkFile = new WorkFile();
 
 	// При първо пускане или когато размерът на прозореца се промени
 	public void rebuildUI() {
+        int buttonSize = 30;
+        BufferedImage editIcon = null;
+        try
+        {
+            editIcon = ImageIO.read(WorkFile.class.getResource("edit-icon.png"));
+        } catch (Exception e) { /* ¯\_(ツ)_/¯ */}
+        ImageIcon buttonIcon = new ImageIcon(editIcon.getScaledInstance(buttonSize - 5, -1, Image.SCALE_SMOOTH));
+
         // Бутон за work file-а
         {
-            int buttonSize = 30;
             if (m_EditWorkFileButton == null)
             {
-                BufferedImage icon = null;
-                try
-                {
-                    icon = ImageIO.read(WorkFile.class.getResource("edit-icon.png"));
-                } catch (Exception e) { /* ¯\_(ツ)_/¯ */}
-
                 m_EditWorkFileButton = new JButton();
-
-                if (icon != null)
-                    m_EditWorkFileButton.setIcon(new ImageIcon(icon.getScaledInstance(buttonSize - 5, -1, Image.SCALE_SMOOTH)));
+                m_EditWorkFileButton.setIcon(buttonIcon);
                 m_EditWorkFileButton.setBackground(GlobalColors.TABLEVIEW_BG_COLOR);
                 m_EditWorkFileButton.addActionListener(e ->
                 {
@@ -58,6 +59,36 @@ public class MainFrame extends JFrame {
             }
 
             m_EditWorkFileButton.setBounds(this.getWidth() - buttonSize * 2 + 7, 5, buttonSize, buttonSize);
+        }
+
+        // Бутон за подредбата на масите
+        {
+            if (m_EditTableLayoutButton == null)
+            {
+                m_EditTableLayoutButton = new JButton();
+                m_EditTableLayoutButton.setIcon(buttonIcon);
+                m_EditTableLayoutButton.setBackground(GlobalColors.EDITTABLELAYOUT_OFF);
+                m_EditTableLayoutButton.addActionListener(e -> m_TableView.setEditing(!m_TableView.isEditing()));
+                m_ContentPane.add(m_EditTableLayoutButton);
+            }
+
+            m_EditTableLayoutButton.setBounds(Utils.percent(this.getWidth(), 60) - buttonSize - 7, 5, buttonSize, buttonSize);
+        }
+
+        // Бутон за добавяне на нова маса
+        {
+            if (m_AddTableButton == null)
+            {
+                Font buttonFont = new Font("SourceSansPro", Font.BOLD, 20);
+                m_AddTableButton = new MenuItemButton();
+                m_AddTableButton.setText("+");
+                m_AddTableButton.setForeground(GlobalColors.TEXT_COLOR);
+                m_AddTableButton.setBackground(GlobalColors.MENUITEM_ADD_BG);
+                m_AddTableButton.setFont(buttonFont);
+                m_AddTableButton.setVisible(false);
+                m_ContentPane.add(m_AddTableButton);
+            }
+            m_AddTableButton.setBounds(m_EditTableLayoutButton.getX() - buttonSize - 7, 5, buttonSize, buttonSize);
         }
 
 		// Полето с масите
@@ -82,7 +113,7 @@ public class MainFrame extends JFrame {
 	}
 
 	private MainFrame() {
-		Instance = this;
+		Instance = this; // Имаме само един MainFrame в цялата програма
 
 		Fonts.registerFonts();
 
@@ -105,13 +136,16 @@ public class MainFrame extends JFrame {
 		this.setContentPane(m_ContentPane);
 	}
 
-    public static WorkFile getWorkFile() {
-        return Instance.m_WorkFile;
-    }
     public static MenuView getMenuView()
     {
         return Instance.m_MenuView;
     }
+    public static TableView getTableView()
+    {
+        return Instance.m_TableView;
+    }
+    public static JButton getEditTableLayoutButton() { return Instance.m_EditTableLayoutButton; }
+    public static JButton getAddTableButton() { return Instance.m_AddTableButton; }
 
 	public static void main(String[] args) { new MainFrame().setVisible(true); }
 }

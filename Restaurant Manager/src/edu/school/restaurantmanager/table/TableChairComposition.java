@@ -8,51 +8,53 @@ import edu.school.restaurantmanager.util.Pair;
 
 // Поставя столовете около масата
 
-public class TableChairComposition {
+class TableChairComposition {
 
 	// Размерът на един стол в px
-	static final int CHAIR_SIZE = 30;
+	private static final int CHAIR_SIZE = 30;
 
 	// Минималното разстояние между два стола в px
-	static final int CHAIR_MARGIN = 6;
+    private static final int CHAIR_MARGIN = 6;
 
 	// Мястото, което заема един стол
-	static final int CHAIR_SPACE = CHAIR_SIZE + CHAIR_MARGIN;
-	
-	static final Polygon CHAIR_POLYGON;
+    private static final int CHAIR_SPACE = CHAIR_SIZE + CHAIR_MARGIN;
+
+    private static final Polygon CHAIR_POLYGON;
 	static {
 		// Горната част на стола е по-малка.
 		int chairTopWidth = (int) Math.round((double) CHAIR_SIZE * 8 / 9);
 	
-		CHAIR_POLYGON = new Polygon(new int[] 
-		{ 
+		CHAIR_POLYGON = new Polygon(new int[] {
 			0, -4, -4, 0 
 		}, 
-		new int[] 
-		{ 
+		new int[] {
 			-CHAIR_SIZE / 2, -chairTopWidth / 2, chairTopWidth / 2, CHAIR_SIZE / 2 
 		}, 4);
 	}
+
+    private Table m_Parent;
+    private Pair<Integer, Integer> m_X, m_Y;
 	
-	Table m_Parent;
-	Pair<Integer, Integer> m_X, m_Y;
-	
-	public TableChairComposition(Table parent) {
+	TableChairComposition(Table parent) {
 		m_Parent = parent;
 
-		// Смята предварително колко маси могат да се съберат и какво ще бъде разстоянието между тях.
-		m_X = calculateTablesAndMargin(m_Parent.m_TableWidth - m_Parent.m_RoundnessX * 2);
-		m_Y = calculateTablesAndMargin(m_Parent.m_TableHeight - m_Parent.m_RoundnessY * 2);
+        recalculate();
 	}
 
-	Pair<Integer, Integer> calculateTablesAndMargin(int remain) {
+	void recalculate() {
+        // Смята колко стола могат да се съберат и какво ще бъде разстоянието между тях.
+        m_X = calculateTablesAndMargin(m_Parent.m_TableWidth - m_Parent.m_RoundnessX * 2);
+        m_Y = calculateTablesAndMargin(m_Parent.m_TableHeight - m_Parent.m_RoundnessY * 2);
+    }
+
+    private Pair<Integer, Integer> calculateTablesAndMargin(int remain) {
 		int tables = remain / CHAIR_SPACE;
 		int leftForPadding = remain - tables * CHAIR_SPACE;
 		
 		return new Pair<>(tables, CHAIR_MARGIN + (int) ((double) leftForPadding / tables));
 	}
-	
-	public void drawChair(Graphics2D g2d) {
+
+    private void drawChair(Graphics2D g2d) {
 		// Основна част
 		g2d.setColor(m_Parent.m_Palette.Chair);
 		g2d.fillPolygon(CHAIR_POLYGON);
@@ -66,7 +68,7 @@ public class TableChairComposition {
 		g2d.translate(-2, 0);
 	}
 
-	void drawChairGroup(Graphics2D g2d, boolean horizontal) {
+    private void drawChairGroup(Graphics2D g2d, boolean horizontal) {
 		int topLeftX = -m_Parent.m_TableWidth / 2;
 		int topLeftY = -m_Parent.m_TableHeight / 2;
 
@@ -89,7 +91,7 @@ public class TableChairComposition {
 		}
 	}
 	
-	public void draw(Graphics2D g2d) {
+	void draw(Graphics2D g2d) {
 		for (int i = 1; i < 5; i++) {
 			drawChairGroup(g2d, i % 2 == 0);
 			g2d.rotate(Math.toRadians(90));
