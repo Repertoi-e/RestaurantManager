@@ -61,6 +61,10 @@ public class MenuView extends JPanel {
     }
 
 	public void updateItems(File workFileContext, String newItems) {
+	    // i = 1, пропуска заглавието, тъй като и то е компонент
+	    for (int i = 1; i < this.getComponentCount(); i++)
+	        this.remove(i);
+
 	    int x = 10;
 	    int y = 50;
 
