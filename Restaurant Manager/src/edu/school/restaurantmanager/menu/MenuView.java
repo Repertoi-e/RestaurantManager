@@ -81,22 +81,42 @@ public class MenuView extends JPanel {
 
                 try {
                     PrintWriter pw = new PrintWriter(new FileWriter(menuFile, true));
-                    pw.println(currLine.trim());
+                    if(!checkIfContains(excludeLines, currLine))
+                        pw.println(currLine.trim());
                     pw.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
-                // Всеки MenuItem има име, цена, файл - снимка и категория.
-                MenuItem item = new MenuItem(name, price, new File(imagesDir.toPath().toString() + "\\" + image), category);
 
-                Category categoryPanel = m_Categories.get(category);
-                if (categoryPanel == null) {
-                    categoryPanel = new Category(this, category);
-                    m_Categories.put(category, categoryPanel);
-                    this.add(categoryPanel);
+                try {
+                    BufferedReader br = new BufferedReader(new FileReader(menuFile));
+                    String line = null;
+
+                    while ((line = br.readLine()) != null){
+                        Matcher itemMatcher = pattern.matcher(line);
+                        String itemName = itemMatcher.group(1).trim(); // trim() премахва разстояния накрая на името
+                        int itemPrice = Integer.parseInt(itemMatcher.group(2));
+                        String itemImage = itemMatcher.group(3).trim(); // trim() премахва разстояния накрая на името
+                        String itemCategory = itemMatcher.group(4).trim();
+
+                        // Всеки MenuItem има име, цена, файл - снимка и категория.
+                        MenuItem item = new MenuItem(itemName, itemPrice, new File(imagesDir.toPath().toString() + "\\" + itemImage), itemCategory);
+
+                        Category categoryPanel = m_Categories.get(itemCategory);
+                        if (categoryPanel == null) {
+                            categoryPanel = new Category(this, itemCategory);
+                            m_Categories.put(itemCategory, categoryPanel);
+                            this.add(categoryPanel);
+                        }
+                        categoryPanel.add(item);
+                    }
+
+
+
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
-                categoryPanel.add(item);
             }
         }
 
@@ -107,6 +127,14 @@ public class MenuView extends JPanel {
         this.invalidate();
 	    this.repaint();
 	}
+
+	private boolean checkIfContains(ArrayList<String> lines, String checkLine){
+        for (String excludeLine : lines) {
+            if(checkLine.trim().equals(excludeLine.trim()))
+                return true;
+        }
+        return false;
+    }
 
 	public void rearrangeMenu() {
         int categoryPadding = 5;

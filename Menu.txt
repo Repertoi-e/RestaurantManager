@@ -1,3 +1,15 @@
-PRODUCT: /name:Минерална вода 250ml   /price:120    /image:logo.jpg /cat:drinks
+#
+#PRODUCT: /name:{Име}     /price:{Цена}     /image:{Снимка}  /cat:{Категория}
+#
+# Снимката трябва да се намира в избраната по-рано директория.
+# (Тя може да се промени с бутона по-долу).
+# Цената е в стотинки: 120 = 1.20 лв.
+#
+# Пример за продукт:
+#     PRODUCT: /name:Минерална вода 250ml   /price:120    /image:water.png
+#
+
 PRODUCT: /name:Минерална вода 250ml   /price:120    /image:logo.jpg /cat:drinks
 PRODUCT: /name:Минерална вода 500ml   /price:120    /image:logo.jpg /cat:drinks
+PRODUCT: /name:Минерална вода 750ml   /price:120    /image:logo.jpg /cat:drinks
+PRODUCT: /name:Минерална вода 1080ml   /price:120    /image:logo.jpg /cat:drinks

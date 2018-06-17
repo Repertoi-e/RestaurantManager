@@ -10,7 +10,10 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
 // Прозорец, с който се променя съдържанието на менюто.
 
@@ -44,19 +47,12 @@ public class WorkFile extends JFrame {
         contentPane.setBackground(GlobalColors.WORKFILE_BACKGROUND);
         this.setContentPane(contentPane);
 
-        m_TextArea = new JTextArea("#\n" +
-                "# PRODUCT: /name:{Име}     /price:{Цена}     /file:{Снимка}\n" +
-                "#\n" +
-                "# Снимката трябва да се намира в избраната по-рано директория.\n" +
-                "# (Тя може да се промени с бутона по-долу).\n" +
-                "# Цената е в стотинки: 120 = 1.20 лв.\n" +
-                "#\n" +
-                "# Пример за продукт:\n" +
-                "# \tPRODUCT: /name:Минерална вода 250ml   /price:120    /image:water.png\n" +
-                "#\n\n", 13, 50);
+        m_TextArea = new JTextArea("", 13, 50);
         m_TextArea.setBackground(GlobalColors.WORKFILE_BACKGROUND.brighter());
         m_TextArea.setForeground(GlobalColors.TEXT_COLOR);
         m_TextArea.setCaretColor(GlobalColors.TEXT_COLOR);
+
+        setTextAreaData();
 
         JScrollPane scroll = new JScrollPane(m_TextArea);
         scroll.setBounds(10, 10, Width - 24, Height - 80);
@@ -81,6 +77,20 @@ public class WorkFile extends JFrame {
     }
 
     public File getImageDir() { return m_ImageDir; }
+
+    public void setTextAreaData(){
+        File file = new File("Menu.txt");
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line = null;
+
+            while ((line = br.readLine()) != null){
+                m_TextArea.append(line+"\n");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public boolean chooseImageDirectory() {
         m_DirectoryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
