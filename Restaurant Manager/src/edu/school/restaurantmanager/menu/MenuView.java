@@ -53,15 +53,17 @@ public class MenuView extends JPanel {
 	        if (currLine.isEmpty() || currLine.startsWith("#"))
 	            continue;
 
-	        Pattern pattern = Pattern.compile("PRODUCT:\\s*/name:(.+?(?=/price:))/price:([0-9]*)\\s*/image:(.*)");
+	        Pattern pattern = Pattern.compile("PRODUCT:\\s*/name:(.+?(?=/price:))/price:([0-9]*)\\s*/image:(.*)\\s*/cat:(.*)");
 	        Matcher matcher = pattern.matcher(currLine);
 	        if (matcher.find()) {
                 String name = matcher.group(1).trim(); // trim() премахва разстояния накрая на името
                 int price = Integer.parseInt(matcher.group(2));
                 String image = matcher.group(3).trim(); // trim() премахва разстояния накрая на името
+				String category = matcher.group(4).trim();
+				File menuFile = new File("Default.restaurant");
 
                 // Всеки MenuItem има име, цена и файл - снимка.
-                MenuItem item = new MenuItem(name, price, new File(imagesDir.toPath().toString() + "\\" + image));
+                MenuItem item = new MenuItem(name, price, new File(imagesDir.toPath().toString() + "\\" + image), category);
                 // Тук е мястото и размера в менюто
                 item.setBounds(currX, currY, 135, 135);
                 // След setBounds, задължително updateBounds !!
