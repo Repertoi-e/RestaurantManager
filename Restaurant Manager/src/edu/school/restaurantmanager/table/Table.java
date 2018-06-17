@@ -51,7 +51,7 @@ public class Table extends JButton {
         });
 	}
 
-	TableShape getShape() { return m_Shape; }
+	public TableShape getShape() { return m_Shape; }
 
 	void updateBounds() {
 	    int width = this.getWidth();

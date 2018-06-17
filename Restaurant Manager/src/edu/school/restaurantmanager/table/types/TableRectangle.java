@@ -35,4 +35,9 @@ public class TableRectangle extends TableShape {
     public boolean shouldAlwaysBeSquare() {
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Rectangle";
+    }
 }

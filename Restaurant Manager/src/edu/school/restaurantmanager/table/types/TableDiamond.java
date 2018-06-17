@@ -25,4 +25,9 @@ public class TableDiamond extends TableRectangle {
     {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Diamond";
+    }
 }

@@ -20,6 +20,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
 import java.awt.font.TextAttribute;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -150,6 +151,11 @@ public class MainFrame extends JFrame {
                 addTableButton.setVisible(editing);
                 m_RemoveTableButton.setVisible(editing);
                 m_TableView.setEditing(editing);
+                try {
+                    m_TableView.addTable();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             });
 
             gcdHead.gridx = 23;
