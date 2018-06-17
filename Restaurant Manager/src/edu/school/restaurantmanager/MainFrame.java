@@ -43,9 +43,7 @@ public class MainFrame extends JFrame {
         attribs.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
         headingFont = headingFont.deriveFont(attribs);
 
-        int buttonSize = 30;
-        ImageIcon buttonEditIcon = Utils.getScaledButtonIcon(WorkFile.class.getResource("edit-icon.png"), buttonSize - 9);
-
+        int buttonSize = GlobalIcons.BUTTON_SIZE;
         // Заглавие при масите
         {
             m_TablesHeading.setLayout(new GridBagLayout());
@@ -66,32 +64,10 @@ public class MainFrame extends JFrame {
             m_TablesHeading.add(label, gcdHead);
 
             Font buttonFont = new Font("SourceSansPro", Font.BOLD, 10);
-            // Бутон за махане на маса
-            m_RemoveTableButton = new JButton(Utils.getScaledButtonIcon(MainFrame.class.getResource("remove-table.png"), buttonSize - 9));
-            m_RemoveTableButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
-            m_RemoveTableButton.setBackground(GlobalColors.MENUITEM_REMOVE_BG);
-            m_RemoveTableButton.setFont(buttonFont);
-            m_RemoveTableButton.setFocusPainted(false);
-            m_RemoveTableButton.setVisible(false);
-            m_RemoveTableButton.addActionListener(action -> {
-                if (m_TableView.RemovingTable) {
-                    m_TableView.RemovingTable = false;
-                    m_RemoveTableButton.setBackground(GlobalColors.MENUITEM_REMOVE_BG);
-                }
-                else {
-                    m_TableView.RemovingTable = true;
-                    m_RemoveTableButton.setBackground(GlobalColors.MENUITEM_REMOVE_BG.brighter().brighter());
-                }
-            });
-
-            gcdHead.gridx = 21;
-            gcdHead.gridwidth = 1;
-            gcdHead.weightx = 0.0;
-            gcdHead.insets = new Insets(10, 10, 10, 0);
-            m_TablesHeading.add(m_RemoveTableButton, gcdHead);
 
             // Бутон за добавяне на маса
-            JButton addTableButton = new JButton(Utils.getScaledButtonIcon(MainFrame.class.getResource("add-table.png"), buttonSize - 9));
+            JButton addTableButton = new JButton(GlobalIcons.ADD_TABLE_ICON);
+            addTableButton.setIconTextGap(addTableButton.getIconTextGap() + 5);
             addTableButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
             addTableButton.setBackground(GlobalColors.EDITTABLELAYOUT_ON);
             addTableButton.setFont(buttonFont);
@@ -131,8 +107,33 @@ public class MainFrame extends JFrame {
             gcdHead.insets = new Insets(10, 10, 10, 0);
             m_TablesHeading.add(addTableButton, gcdHead);
 
+            // Бутон за махане на маса
+            m_RemoveTableButton = new JButton(GlobalIcons.REMOVE_TABLE_ICON);
+            m_RemoveTableButton.setIconTextGap(m_RemoveTableButton.getIconTextGap() + 5);
+            m_RemoveTableButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
+            m_RemoveTableButton.setBackground(GlobalColors.MENUITEM_REMOVE_BG);
+            m_RemoveTableButton.setFont(buttonFont);
+            m_RemoveTableButton.setFocusPainted(false);
+            m_RemoveTableButton.setVisible(false);
+            m_RemoveTableButton.addActionListener(action -> {
+                if (m_TableView.RemovingTable) {
+                    m_TableView.RemovingTable = false;
+                    m_RemoveTableButton.setBackground(GlobalColors.MENUITEM_REMOVE_BG);
+                }
+                else {
+                    m_TableView.RemovingTable = true;
+                    m_RemoveTableButton.setBackground(GlobalColors.MENUITEM_REMOVE_BG.brighter().brighter());
+                }
+            });
+
+            gcdHead.gridx = 21;
+            gcdHead.gridwidth = 1;
+            gcdHead.weightx = 0.0;
+            gcdHead.insets = new Insets(10, 10, 10, 0);
+            m_TablesHeading.add(m_RemoveTableButton, gcdHead);
+
             // Бутон за променяне на масите
-            JButton editTablesButton = new JButton(buttonEditIcon);
+            JButton editTablesButton = new JButton(GlobalIcons.EDIT_ICON);
             editTablesButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
             editTablesButton.setBackground(GlobalColors.TABLEVIEW_BG_COLOR);
             editTablesButton.setFocusPainted(false);
@@ -177,7 +178,7 @@ public class MainFrame extends JFrame {
             m_MenuHeading.add(label, gcdHead);
 
             // Бутон за избиране на Work file
-            JButton editMenuButton = new JButton(buttonEditIcon);
+            JButton editMenuButton = new JButton(GlobalIcons.EDIT_ICON);
             editMenuButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
             editMenuButton.setBackground(GlobalColors.TABLEVIEW_BG_COLOR);
             editMenuButton.setFocusPainted(false);
