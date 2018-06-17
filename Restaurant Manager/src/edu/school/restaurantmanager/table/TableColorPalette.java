@@ -25,8 +25,8 @@ public class TableColorPalette
 
     static final TableColorPalette UNAVAILABLE = new TableColorPalette();
     static {
-        UNAVAILABLE.Top = Color.decode("#fdd835");
-        UNAVAILABLE.Chair = Color.decode("#fbc02d");
-        UNAVAILABLE.ChairShadow = Color.decode("#e8b228");
+        UNAVAILABLE.Top = new Color(56, 141, 133);
+        UNAVAILABLE.Chair = new Color(56, 111, 120);
+        UNAVAILABLE.ChairShadow = new Color(56, 116, 107);
     }
 }

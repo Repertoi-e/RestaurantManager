@@ -89,7 +89,7 @@ public class MenuItem extends JPanel {
     void updateBounds() {
         m_Graphics.updateBounds(this.getWidth() / 2, (int) ((double)this.getHeight() / 2.35));
 
-        int buttonSize = 25;
+        int buttonSize = 18;
 
         m_Add.setBounds(10, this.getHeight() - buttonSize - 10, buttonSize, buttonSize);
         m_Remove.setBounds(this.getWidth() - buttonSize - 10, this.getHeight() - buttonSize - 10, buttonSize, buttonSize);

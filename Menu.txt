@@ -1,4 +1,4 @@
-#
+﻿#
 #PRODUCT: /name:{Име}     /price:{Цена}     /image:{Снимка}  /cat:{Категория}
 #
 # Снимката трябва да се намира в избраната по-рано директория.
@@ -9,7 +9,26 @@
 #     PRODUCT: /name:Минерална вода 250ml   /price:120    /image:water.png
 #
 
-PRODUCT: /name:Минерална вода 250ml   /price:120    /image:logo.jpg /cat:drinks
-PRODUCT: /name:Минерална вода 500ml   /price:120    /image:logo.jpg /cat:drinks
-PRODUCT: /name:Минерална вода 750ml   /price:120    /image:logo.jpg /cat:drinks
-PRODUCT: /name:Минерална вода 1080ml   /price:120    /image:logo.jpg /cat:drinks
+PRODUCT: /name:Шопска салата   		/price:420    /image:salad/shopska.png 				/cat:Салати
+PRODUCT: /name:Гръцка салата   		/price:549    /image:salad/grucka.png 				/cat:Салати
+PRODUCT: /name:Цезар и пиле    		/price:720    /image:salad/cezar_pile.png 			/cat:Салати
+PRODUCT: /name:Спанак и киноа  		/price:620    /image:salad/spanak_kinoa.png 		/cat:Салати
+PRODUCT: /name:Средиземноморска		/price:620    /image:salad/sredizemnomorska.png 	/cat:Салати
+
+PRODUCT: /name:Картофки на BBQ 				/price:320    /image:apetizer/kartofki_bbq.png 				/cat:Предястия
+PRODUCT: /name:Печени зеленчуци   			/price:580    /image:apetizer/pecheni_zelenchuci.png 		/cat:Предястия
+PRODUCT: /name:Спаначена супа    			/price:580    /image:apetizer/spanachena_supa.png 			/cat:Предястия
+PRODUCT: /name:Тиквички по гръцки  			/price:450    /image:apetizer/tikvichki_grucki.png 			/cat:Предястия
+PRODUCT: /name:Пилешки пуканки  			/price:320    /image:apetizer/pileshki_pukanki.png 			/cat:Предястия
+PRODUCT: /name:Крилца с картофки и BBQ сос  /price:790    /image:apetizer/pilkrilca_kartofki_bbq.png 	/cat:Предястия
+
+PRODUCT: /name:Спагети болонезе 		/price:540    /image:pasta_rissoto/boloneze.png 				/cat:Паста и ризото
+PRODUCT: /name:Калмари на плоча 		/price:760    /image:pasta_rissoto/kalmari_plocha.png 			/cat:Паста и ризото
+PRODUCT: /name:Ориз със зеленчуци 		/price:680    /image:pasta_rissoto/oriz_zelenchuci.png 			/cat:Паста и ризото
+PRODUCT: /name:Ризото неро 				/price:720    /image:pasta_rissoto/rizoto_nero.png 				/cat:Паста и ризото
+PRODUCT: /name:Ризото с пиле 			/price:520    /image:pasta_rissoto/rizoto_pile.png 				/cat:Паста и ризото
+PRODUCT: /name:Спагети със сьомга 		/price:1320    /image:pasta_rissoto/spageti_siomga.png 			/cat:Паста и ризото
+
+PRODUCT: /name:Минерална вода 250ml 	/price:120    /image:drinks/devin.png 			/cat:Безалкохолни напитки
+PRODUCT: /name:Кока кола 250ml 			/price:180    /image:drinks/coca_cola.png 		/cat:Безалкохолни напитки
+PRODUCT: /name:Фанта 250ml 				/price:180    /image:drinks/fanta.png 			/cat:Безалкохолни напитки

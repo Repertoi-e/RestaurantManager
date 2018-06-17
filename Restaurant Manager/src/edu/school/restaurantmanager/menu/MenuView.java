@@ -1,43 +1,25 @@
 package edu.school.restaurantmanager.menu;
 
 import edu.school.restaurantmanager.GlobalColors;
-import edu.school.restaurantmanager.MainFrame;
-import edu.school.restaurantmanager.util.ResizeListener;
-import edu.school.restaurantmanager.util.ResourceLoader;
-import edu.school.restaurantmanager.util.Utils;
-import edu.school.restaurantmanager.workfile.WorkFile;
 
 import java.awt.*;
-import java.awt.font.TextAttribute;
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.TitledBorder;
 
 // Полето, където се показва менюто.
 
 public class MenuView extends JPanel {
 
-    public JScrollPane ParentScrollPane;
-    private HashMap<String, Category> m_Categories = new HashMap<>();
+    private LinkedHashMap<String, Category> m_Categories = new LinkedHashMap<>();
 
 	public MenuView() {
         this.setLayout(null);
 		this.setBackground(GlobalColors.MENUVIEW_BG_COLOR);
-
-		// Когато се промени размера на прозореца, подреждаме менюто
-		this.addComponentListener(new ResizeListener((width, height) -> rearrangeMenu()));
 	}
 
 	public void setButtonsVisible(boolean visible) {
@@ -65,10 +47,10 @@ public class MenuView extends JPanel {
 
 				MenuItem item = new MenuItem(name, price, new File(imagesDir.toPath().toString() + "\\" + image), category);
 
-                Category categoryPanel = m_Categories.get(itemCategory);
+                Category categoryPanel = m_Categories.get(category);
                 if (categoryPanel == null) {
-                    categoryPanel = new Category(this, itemCategory);
-                    m_Categories.put(itemCategory, categoryPanel);
+                    categoryPanel = new Category(this, category);
+                    m_Categories.put(category, categoryPanel);
                     this.add(categoryPanel);
                 }
                 categoryPanel.add(item);
@@ -76,7 +58,12 @@ public class MenuView extends JPanel {
         }
 
         File menuFile = new File("Menu.txt");
-        System.out.println(menuFile.exists());
+	    if (!menuFile.exists())
+        {
+            System.out.println("---------------------------------");
+            System.out.println("Menu file doesn't exist: " + menuFile.toString());
+            System.out.println("---------------------------------");
+        }
         try {
             Files.write(menuFile.toPath(), newItems.getBytes());
         } catch (IOException e) {
@@ -100,8 +87,6 @@ public class MenuView extends JPanel {
             category.setLocation(x, categoryPadding);
             x += category.getWidth() + categoryPadding;
         }
-        this.setPreferredSize(new Dimension(x, this.getHeight()));
-        ParentScrollPane.revalidate();
-        ParentScrollPane.repaint();
+        this.setPreferredSize(new Dimension(x, this.getPreferredSize().height));
     }
 }

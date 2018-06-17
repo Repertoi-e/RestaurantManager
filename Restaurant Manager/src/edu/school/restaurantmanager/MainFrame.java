@@ -27,7 +27,7 @@ public class MainFrame extends JFrame {
 	
 	// Размерът на прозореца
     private static final Dimension MinimumSize = new Dimension(720, 400);
-    private static final Dimension PreferredSize = new Dimension(960, 570);
+    private static final Dimension PreferredSize = new Dimension(960, 442);
 
     private Container m_ContentPane;
     private JPanel m_TablesHeading = new JPanel(), m_MenuHeading = new JPanel();
@@ -241,7 +241,14 @@ public class MainFrame extends JFrame {
             JScrollPane pane = new JScrollPane(m_MenuView, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
             pane.setPreferredSize(new Dimension(350, 0));
             pane.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 15));
-            m_MenuView.ParentScrollPane = pane;
+
+            // Когато се промени размера на прозореца, подреждаме менюто
+            pane.addComponentListener(new ResizeListener((width, height) -> {
+                m_MenuView.setPreferredSize(new Dimension(width, height));
+                m_MenuView.rearrangeMenu();
+                pane.revalidate();
+                pane.repaint();
+            }));
 
             m_ContentPane.add(pane, gcd);
         }
@@ -257,10 +264,6 @@ public class MainFrame extends JFrame {
         this.setSize(MainFrame.PreferredSize);
 		this.setMinimumSize(MainFrame.MinimumSize);
 		this.setLocationRelativeTo(getOwner());
-		this.addComponentListener(new ResizeListener(((width, height) -> {
-            System.out.println(height);
-            m_MenuView.rearrangeMenu();
-        })));
 
         m_ContentPane = this.getContentPane();
 		m_ContentPane.setLayout(new GridBagLayout());
