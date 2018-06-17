@@ -67,9 +67,8 @@ public class MainFrame extends JFrame {
 
             Font buttonFont = new Font("SourceSansPro", Font.BOLD, 10);
             // Бутон за махане на маса
-            m_RemoveTableButton = new JButton("x");
+            m_RemoveTableButton = new JButton(Utils.getScaledButtonIcon(MainFrame.class.getResource("remove-table.png"), buttonSize - 9));
             m_RemoveTableButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
-            m_RemoveTableButton.setForeground(GlobalColors.TEXT_COLOR);
             m_RemoveTableButton.setBackground(GlobalColors.MENUITEM_REMOVE_BG);
             m_RemoveTableButton.setFont(buttonFont);
             m_RemoveTableButton.setFocusPainted(false);
@@ -92,9 +91,8 @@ public class MainFrame extends JFrame {
             m_TablesHeading.add(m_RemoveTableButton, gcdHead);
 
             // Бутон за добавяне на маса
-            JButton addTableButton = new JButton("+");
+            JButton addTableButton = new JButton(Utils.getScaledButtonIcon(MainFrame.class.getResource("add-table.png"), buttonSize - 9));
             addTableButton.setPreferredSize(new Dimension(buttonSize, buttonSize));
-            addTableButton.setForeground(GlobalColors.TEXT_COLOR);
             addTableButton.setBackground(GlobalColors.EDITTABLELAYOUT_ON);
             addTableButton.setFont(buttonFont);
             addTableButton.setFocusPainted(false);
@@ -116,7 +114,7 @@ public class MainFrame extends JFrame {
                         shape = new TableRound();
                     if (option == JOptionPane.CANCEL_OPTION)
                         shape = new TableDiamond();
-                    Table table = new Table(0, 0,100, 100, shape);
+                    Table table = new Table(20, 20,100, 100, shape);
                     table.addMouseListener(m_TableView.TableMover);
                     table.addMouseListener(m_TableView.TableResizer);
                     table.addMouseMotionListener(m_TableView.TableResizer);
@@ -184,10 +182,14 @@ public class MainFrame extends JFrame {
             editMenuButton.setBackground(GlobalColors.TABLEVIEW_BG_COLOR);
             editMenuButton.setFocusPainted(false);
             editMenuButton.addActionListener(action -> {
-                if (m_WorkFile.getImageDir() == null && !m_WorkFile.chooseImageDirectory())
+                if (m_WorkFile.getImageDir() == null)
                 {
-                    JOptionPane.showMessageDialog(null, "Моля, изберете директория със снимките, които ще се използват в менюто.", "Грешка", JOptionPane.ERROR_MESSAGE);
-                    return;
+                    JOptionPane.showMessageDialog(null, "Изберете директория със снимките, които ще се използват в менюто.", "Меню", JOptionPane.INFORMATION_MESSAGE);
+                    if (!m_WorkFile.chooseImageDirectory())
+                    {
+                        JOptionPane.showMessageDialog(null, "Моля, изберете директория.", "Грешка", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
                 }
                 m_WorkFile.setVisible(true);
             });
@@ -238,7 +240,7 @@ public class MainFrame extends JFrame {
 
         m_WorkFile.setVisible(false);
 
-        this.setTitle("Restaurant manager");
+        this.setTitle("Ресторант");
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setSize(MainFrame.PreferredSize);
 		this.setMinimumSize(MainFrame.MinimumSize);

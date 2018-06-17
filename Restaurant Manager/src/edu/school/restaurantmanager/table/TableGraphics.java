@@ -33,7 +33,7 @@ class TableGraphics {
         g2d.fillRect(m_StatusLabelBounds.x, m_StatusLabelBounds.y, m_StatusLabelBounds.width, m_StatusLabelBounds.height);
 
         g2d.setColor(GlobalColors.TEXT_COLOR);
-        Utils.drawCenteredString(g2d, table.m_Name, m_StatusLabelBounds, m_NameLabelFont);
+        Utils.drawCenteredString(g2d, table.getName(), m_StatusLabelBounds, m_NameLabelFont);
 
         g2d.translate(0, 20);
 

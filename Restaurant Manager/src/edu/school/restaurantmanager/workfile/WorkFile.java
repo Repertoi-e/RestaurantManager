@@ -23,7 +23,7 @@ public class WorkFile extends JFrame {
     private JFileChooser m_DirectoryChooser = new JFileChooser();
 
     public WorkFile() {
-        this.setTitle("Work file");
+        this.setTitle("Меню");
         this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         this.setSize(new Dimension(
                 WorkFile.Width,
@@ -44,7 +44,16 @@ public class WorkFile extends JFrame {
         contentPane.setBackground(GlobalColors.WORKFILE_BACKGROUND);
         this.setContentPane(contentPane);
 
-        m_TextArea = new JTextArea("# Input products here!\n", 13, 50);
+        m_TextArea = new JTextArea("#\n" +
+                "# PRODUCT: /name:{Име}     /price:{Цена}     /file:{Снимка}\n" +
+                "#\n" +
+                "# Снимката трябва да се намира в избраната по-рано директория.\n" +
+                "# (Тя може да се промени с бутона по-долу).\n" +
+                "# Цената е в стотинки: 120 = 1.20 лв.\n" +
+                "#\n" +
+                "# Пример за продукт:\n" +
+                "# \tPRODUCT: /name:Минерална вода 250ml   /price:120    /image:water.png\n" +
+                "#\n\n", 13, 50);
         m_TextArea.setBackground(GlobalColors.WORKFILE_BACKGROUND.brighter());
         m_TextArea.setForeground(GlobalColors.TEXT_COLOR);
         m_TextArea.setCaretColor(GlobalColors.TEXT_COLOR);

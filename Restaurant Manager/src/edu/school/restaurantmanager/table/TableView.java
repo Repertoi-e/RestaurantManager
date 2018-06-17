@@ -50,9 +50,9 @@ public class TableView extends JPanel {
 
         setEditing(false);
 
-        this.add(new Table(100, 100, 180, 250, new TableRectangle()));
-        this.add(new Table(300, 350, 90, 90, new TableRound()));
-        this.add(new Table(300, 350, 90, 90, new TableDiamond()));
+        this.add(new Table(220, 100, 110, 230, new TableRectangle()));
+        this.add(new Table(350, 100, 110, 110, new TableRound()));
+        this.add(new Table(350, 220, 110, 110, new TableDiamond()));
 	}
 
     public boolean isEditing() {
