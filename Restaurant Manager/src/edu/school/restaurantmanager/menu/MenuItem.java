@@ -138,8 +138,6 @@ public class MenuItem extends JPanel {
         this.m_Category = category;
     }
 
-
-
     @Override
     public boolean equals(Object other)
     {

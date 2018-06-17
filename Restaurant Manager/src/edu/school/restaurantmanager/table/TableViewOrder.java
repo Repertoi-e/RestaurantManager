@@ -28,16 +28,12 @@ public class TableViewOrder extends JFrame {
         this.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentHidden(ComponentEvent e) {
-                MenuView view = MainFrame.getMenuView();
-                for (int i = 0; i < view.getComponentCount(); i++)
-                    ((MenuItem)view.getComponent(i)).setButtonsVisible(false);
+                MainFrame.getMenuView().setButtonsVisible(false);
             }
 
             @Override
             public void componentShown(ComponentEvent e) {
-                MenuView view = MainFrame.getMenuView();
-                for (int i = 0; i < view.getComponentCount(); i++)
-                    ((MenuItem)view.getComponent(i)).setButtonsVisible(true);
+                MainFrame.getMenuView().setButtonsVisible(true);
             }
         });
 

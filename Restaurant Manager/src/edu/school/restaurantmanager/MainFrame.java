@@ -1,11 +1,13 @@
 package edu.school.restaurantmanager;
 
+import edu.school.restaurantmanager.menu.MenuItem;
 import edu.school.restaurantmanager.menu.MenuView;
 import edu.school.restaurantmanager.table.Table;
 import edu.school.restaurantmanager.table.TableShape;
 import edu.school.restaurantmanager.table.types.TableDiamond;
 import edu.school.restaurantmanager.table.types.TableRectangle;
 import edu.school.restaurantmanager.table.types.TableRound;
+import edu.school.restaurantmanager.util.ResizeListener;
 import edu.school.restaurantmanager.util.Utils;
 import edu.school.restaurantmanager.workfile.WorkFile;
 import edu.school.restaurantmanager.table.TableView;
@@ -14,6 +16,8 @@ import edu.school.restaurantmanager.util.Fonts;
 import javax.swing.*;
 
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 import java.awt.font.TextAttribute;
 import java.io.File;
 import java.util.HashMap;
@@ -23,7 +27,7 @@ public class MainFrame extends JFrame {
 	
 	// Размерът на прозореца
     private static final Dimension MinimumSize = new Dimension(720, 400);
-    private static final Dimension PreferredSize = new Dimension(960, 540);
+    private static final Dimension PreferredSize = new Dimension(960, 570);
 
     private Container m_ContentPane;
     private JPanel m_TablesHeading = new JPanel(), m_MenuHeading = new JPanel();
@@ -224,8 +228,8 @@ public class MainFrame extends JFrame {
 
         // Меню
         {
-            m_MenuView = new MenuView(450);
-            m_MenuView.setPreferredSize(new Dimension(350, 0));
+            m_MenuView = new MenuView();
+            m_MenuView.setPreferredSize(new Dimension(350 - 10 /*scrollbar*/, 0));
 
             gcd.gridx = 13;
             gcd.gridy = 2;
@@ -233,7 +237,13 @@ public class MainFrame extends JFrame {
             gcd.gridheight = 18;
             gcd.weightx = 0;
             gcd.weighty = 1.0;
-            m_ContentPane.add(m_MenuView, gcd);
+
+            JScrollPane pane = new JScrollPane(m_MenuView, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            pane.setPreferredSize(new Dimension(350, 0));
+            pane.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 15));
+            m_MenuView.ParentScrollPane = pane;
+
+            m_ContentPane.add(pane, gcd);
         }
 	}
 
@@ -247,6 +257,10 @@ public class MainFrame extends JFrame {
         this.setSize(MainFrame.PreferredSize);
 		this.setMinimumSize(MainFrame.MinimumSize);
 		this.setLocationRelativeTo(getOwner());
+		this.addComponentListener(new ResizeListener(((width, height) -> {
+            System.out.println(height);
+            m_MenuView.rearrangeMenu();
+        })));
 
         m_ContentPane = this.getContentPane();
 		m_ContentPane.setLayout(new GridBagLayout());
@@ -270,8 +284,6 @@ public class MainFrame extends JFrame {
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
