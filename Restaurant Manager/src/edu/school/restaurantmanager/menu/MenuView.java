@@ -49,6 +49,23 @@ public class MenuView extends JPanel {
 	    for (int i = 1; i < this.getComponentCount(); i++)
 	        this.remove(i);
 
+        File menuFile = new File("Menu.txt");
+        System.out.println(menuFile.exists());
+	    ArrayList<String> excludeLines = new ArrayList<>();
+
+	    try {
+            BufferedReader br = new BufferedReader(new FileReader(menuFile));
+            String line = null;
+
+            while ((line = br.readLine()) != null){
+                excludeLines.add(line.trim());
+            }
+            br.close();
+
+        }catch (Exception e){
+	        e.printStackTrace();
+        }
+
 	    for (String currLine : newItems.split("\\r?\\n")) {
 	        // Пропуска коментари.
 	        if (currLine.isEmpty() || currLine.startsWith("#"))
@@ -61,7 +78,14 @@ public class MenuView extends JPanel {
                 int price = Integer.parseInt(matcher.group(2));
                 String image = matcher.group(3).trim(); // trim() премахва разстояния накрая на името
 				String category = matcher.group(4).trim();
-				File menuFile = new File("Default.restaurant");
+
+                try {
+                    PrintWriter pw = new PrintWriter(new FileWriter(menuFile, true));
+                    pw.println(currLine.trim());
+                    pw.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 // Всеки MenuItem има име, цена, файл - снимка и категория.
                 MenuItem item = new MenuItem(name, price, new File(imagesDir.toPath().toString() + "\\" + image), category);

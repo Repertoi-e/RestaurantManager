@@ -1,0 +1,3 @@
+PRODUCT: /name:Минерална вода 250ml   /price:120    /image:logo.jpg /cat:drinks
+PRODUCT: /name:Минерална вода 250ml   /price:120    /image:logo.jpg /cat:drinks
+PRODUCT: /name:Минерална вода 500ml   /price:120    /image:logo.jpg /cat:drinks
