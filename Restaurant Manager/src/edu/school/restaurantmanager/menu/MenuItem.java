@@ -22,16 +22,17 @@ public class MenuItem extends JPanel {
     // има грешки при закръгляне: 0.0000000234..)
     private int m_Price;
     private Image m_Image;
+    private String m_Category;
 
     private MenuItemGraphics m_Graphics;
     private MenuItemButton m_Add, m_Remove;
 
-    MenuItem(String name, int price, File image) {
+    MenuItem(String name, int price, File image, String category) {
         this.setLayout(null);
         this.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 3));
 
         setImage(image);
-
+        setCategory(category);
         setName(name);
         setPrice(price);
 
@@ -103,6 +104,8 @@ public class MenuItem extends JPanel {
     public String getName() { return m_Name; }
     public int getPrice() { return m_Price; }
 
+    public String getCategory() { return m_Category; }
+
     public void setName(String name) {
         // Ако името е твърде дълго го съкращаваме с ...
         if (name.length() > 21)
@@ -130,6 +133,12 @@ public class MenuItem extends JPanel {
             JOptionPane.showMessageDialog(null, image.toString(), "Файлът не е намерен!", JOptionPane.ERROR_MESSAGE);
         }
     }
+
+    public void setCategory(String category) {
+        this.m_Category = category;
+    }
+
+
 
     @Override
     public boolean equals(Object other)

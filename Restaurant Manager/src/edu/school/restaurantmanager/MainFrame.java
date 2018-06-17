@@ -15,6 +15,7 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.font.TextAttribute;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -267,6 +268,13 @@ public class MainFrame extends JFrame {
     }
 
     public static void main(String[] args) {
-	    Instance.setVisible(true);
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Instance.setVisible(true);
 	}
 }
