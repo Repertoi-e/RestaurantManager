@@ -16,7 +16,7 @@ public class Table extends JButton {
 
     public ReceiptLog Order = null;
 
-    String m_Name;
+    private String m_Name;
     private TableShape m_Shape;
 	private TableGraphics m_Graphics = new TableGraphics();
 
@@ -53,12 +53,24 @@ public class Table extends JButton {
 
 	TableShape getShape() { return m_Shape; }
 
-	// FIXME
 	void updateBounds() {
 	    int width = this.getWidth();
 	    int height = this.getHeight();
 
         m_Graphics.updateBounds(width / 2, height / 2);
+    }
+
+    @Override
+    public String getName() {
+        return m_Name;
+    }
+
+    @Override
+    public void setName(String name) {
+        m_Name = name;
+
+        invalidate();
+        repaint();
     }
 
     void makeUnavailable() {
