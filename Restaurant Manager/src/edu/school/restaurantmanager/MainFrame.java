@@ -1,6 +1,5 @@
 package edu.school.restaurantmanager;
 
-import edu.school.restaurantmanager.menu.MenuItem;
 import edu.school.restaurantmanager.menu.MenuView;
 import edu.school.restaurantmanager.table.Table;
 import edu.school.restaurantmanager.table.TableShape;
@@ -8,7 +7,6 @@ import edu.school.restaurantmanager.table.types.TableDiamond;
 import edu.school.restaurantmanager.table.types.TableRectangle;
 import edu.school.restaurantmanager.table.types.TableRound;
 import edu.school.restaurantmanager.util.ResizeListener;
-import edu.school.restaurantmanager.util.Utils;
 import edu.school.restaurantmanager.workfile.WorkFile;
 import edu.school.restaurantmanager.table.TableView;
 import edu.school.restaurantmanager.util.Fonts;
@@ -20,6 +18,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
 import java.awt.font.TextAttribute;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -150,6 +149,11 @@ public class MainFrame extends JFrame {
                 addTableButton.setVisible(editing);
                 m_RemoveTableButton.setVisible(editing);
                 m_TableView.setEditing(editing);
+                try {
+                    m_TableView.addTable();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             });
 
             gcdHead.gridx = 23;

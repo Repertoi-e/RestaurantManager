@@ -36,4 +36,9 @@ public class TableRound extends TableShape {
     {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Round";
+    }
 }

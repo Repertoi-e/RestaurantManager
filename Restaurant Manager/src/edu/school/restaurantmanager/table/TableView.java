@@ -8,6 +8,7 @@ import edu.school.restaurantmanager.table.types.TableRound;
 import edu.school.restaurantmanager.util.ResizeListener;
 
 import java.awt.*;
+import java.io.*;
 
 import javax.swing.*;
 
@@ -48,12 +49,14 @@ public class TableView extends JPanel {
             }
         }));
 
-        setEditing(false);
 
-        this.add(new Table(220, 100, 110, 230, new TableRectangle()));
-        this.add(new Table(350, 100, 110, 110, new TableRound()));
-        this.add(new Table(350, 220, 110, 110, new TableDiamond()));
-	}
+        try {
+            drawTables();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setEditing(false);
+    }
 
     public boolean isEditing() {
         return m_Editing;
@@ -87,6 +90,43 @@ public class TableView extends JPanel {
 
         this.invalidate();
         this.repaint();
+    }
+
+     public void addTable() throws IOException {
+        File file = new File("Tables.txt");
+        PrintWriter pw = new PrintWriter(new FileWriter(file));
+        if(!isEditing()){
+            for (int i = 0; i < this.getComponentCount(); i++) {
+                Table table = (Table) this.getComponent(i);
+
+                pw.println(table.getShape()+" "+table.getX()+" "+table.getY()+" "+table.getWidth()+" "+table.getHeight());
+            }
+        }
+        pw.close();
+        this.repaint();
+    }
+
+    public void drawTables() throws Exception {
+        File file = new File("Tables.txt");
+        BufferedReader br = new BufferedReader(new FileReader(file));
+
+        String line = null;
+
+        while ((line = br.readLine()) != null){
+            String[] lineSep = line.split(" ");
+
+            TableShape shape;
+            if(lineSep[0].equals("Rectangle")){
+                shape = new TableRectangle();
+            }else if(lineSep[0].equals("Diamond")){
+                shape = new TableDiamond();
+            }else{
+                shape = new TableRound();
+            }
+
+            Table table = new Table(Integer.parseInt(lineSep[1]), Integer.parseInt(lineSep[2]), Integer.parseInt(lineSep[3]), Integer.parseInt(lineSep[4]), shape);
+            this.add(table);
+        }
     }
 
     public TableViewOrder getOrderFrame() { return m_OrderFrame; }
