@@ -1,7 +1,7 @@
 package edu.school.restaurantmanager.menu;
 
 import edu.school.restaurantmanager.GlobalColors;
-import edu.school.restaurantmanager.ui.UILabel;
+import edu.school.restaurantmanager.util.UILabel;
 import edu.school.restaurantmanager.util.Utils;
 
 import java.awt.*;

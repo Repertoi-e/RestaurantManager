@@ -27,31 +27,21 @@ class TableGraphics {
     void draw(Graphics2D g2d, Table table) {
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-        TableOrder order = table.Order;
+        g2d.translate(0, -10);
 
-        if (order != null) {
-            g2d.translate(0, -10);
+        g2d.setColor(new Color(0.0f, 0.0f, 0.0f, 0.15f));
+        g2d.fillRect(m_StatusLabelBounds.x, m_StatusLabelBounds.y, m_StatusLabelBounds.width, m_StatusLabelBounds.height);
 
-            g2d.setColor(new Color(0.0f, 0.0f, 0.0f, 0.15f));
-            g2d.fillRect(m_StatusLabelBounds.x, m_StatusLabelBounds.y, m_StatusLabelBounds.width, m_StatusLabelBounds.height);
+        g2d.setColor(GlobalColors.TEXT_COLOR);
+        Utils.drawCenteredString(g2d, table.m_Name, m_StatusLabelBounds, m_NameLabelFont);
 
-            g2d.setColor(GlobalColors.TEXT_COLOR);
-            Utils.drawCenteredString(g2d, Utils.getBookHourAsString(order), m_StatusLabelBounds, m_NameLabelFont);
+        g2d.translate(0, 20);
 
-            g2d.translate(0, 20);
+        g2d.setColor(new Color(0.0f, 0.0f, 0.0f, 0.15f));
+        g2d.fillRect(m_StatusLabelBounds.x, m_StatusLabelBounds.y, m_StatusLabelBounds.width, m_StatusLabelBounds.height);
 
-            g2d.setColor(new Color(0.0f, 0.0f, 0.0f, 0.15f));
-            g2d.fillRect(m_StatusLabelBounds.x, m_StatusLabelBounds.y, m_StatusLabelBounds.width, m_StatusLabelBounds.height);
-
-            g2d.setColor(GlobalColors.TEXT_COLOR);
-            Utils.drawCenteredString(g2d, Utils.getPriceAsString(order.Total), m_StatusLabelBounds, m_NameLabelFont);
-            g2d.translate(0, -10);
-        } else {
-            g2d.setColor(new Color(0.0f, 0.0f, 0.0f, 0.15f));
-            g2d.fillRect(m_StatusLabelBounds.x, m_StatusLabelBounds.y, m_StatusLabelBounds.width, m_StatusLabelBounds.height);
-
-            g2d.setColor(Color.decode("#a4f442"));
-            Utils.drawCenteredString(g2d, "Свободна", m_StatusLabelBounds, m_NameLabelFont);
-        }
+        g2d.setColor(GlobalColors.TEXT_COLOR);
+        Utils.drawCenteredString(g2d, table.Order != null ? Utils.getPriceAsString(table.Order.getTotal()) : "Свободна", m_StatusLabelBounds, m_NameLabelFont);
+        g2d.translate(0, -10);
     }
 }

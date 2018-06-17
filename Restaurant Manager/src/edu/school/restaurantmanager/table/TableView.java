@@ -2,12 +2,12 @@ package edu.school.restaurantmanager.table;
 
 import edu.school.restaurantmanager.GlobalColors;
 import edu.school.restaurantmanager.MainFrame;
-import edu.school.restaurantmanager.util.Utils;
+import edu.school.restaurantmanager.table.types.TableDiamond;
+import edu.school.restaurantmanager.table.types.TableRectangle;
+import edu.school.restaurantmanager.table.types.TableRound;
+import edu.school.restaurantmanager.util.ResizeListener;
 
 import java.awt.*;
-import java.awt.font.TextAttribute;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.*;
 
@@ -15,87 +15,79 @@ import javax.swing.*;
 
 public class TableView extends JPanel {
 
-    private JPanel m_Heading;
-    private TableViewOrder m_OrderPanel;
+    private TableViewOrder m_OrderFrame = new TableViewOrder();
 
-    private final TableMover m_TableMover = new TableMover();
-    private final TableResizer m_TableResizer = new TableResizer();
+    public final TableMover TableMover = new TableMover();
+    public final TableResizer TableResizer = new TableResizer();
 
     private boolean m_Editing = false;
+    public boolean RemovingTable = false;
 	
 	public TableView() {
 		this.setBackground(GlobalColors.TABLEVIEW_BG_COLOR);
 		this.setLayout(null);
 
-        m_Heading = new JPanel();
-        m_Heading.setBackground(GlobalColors.TABLEVIEW_HEAD_COLOR);
-        m_Heading.setLayout(null);
-        {
-            Font font = new Font("SourceSansPro", Font.ITALIC | Font.BOLD, 25);
-            Map<TextAttribute, Object> fontAttribs = new HashMap<>(font.getAttributes());
-            fontAttribs.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+		// При промяна на размера на прозореца, полето с масите също
+        // променя размера си. Ако се сложат маси там, докато прозореца
+        // е голям и после се смали, масите остават извън малкото поле
+        // и са невидими.
+        // Затова всеки път като се промени размера, проверяваме за маси
+        // извън полето.
+		this.addComponentListener(new ResizeListener((width, height) -> {
+            for (int i = 1; i < this.getComponentCount(); i++)
+            {
+                Component table = this.getComponent(i);
 
-            JLabel label = new JLabel("Маси");
-            label.setFont(font.deriveFont(fontAttribs));
-            label.setForeground(GlobalColors.TEXT_COLOR);
-            m_Heading.add(label);
-        }
-        this.add(m_Heading);
+                int locationX = table.getX(), locationY = table.getY();
+                while (locationX + table.getWidth() + TableMover.EDGE_INSETS.right > width)
+                    locationX -= TableMover.SNAP_SIZE.width;
 
-	    this.add(m_OrderPanel = new TableViewOrder());
-		
-		// Пример за жълта маса
-		TableColorPalette yellow = new TableColorPalette();
-		{
-			yellow.Top = Color.decode("#fdd835");
-			yellow.Chair = Color.decode("#fbc02d");
-			yellow.ChairShadow = yellow.Chair.darker(); //Color.decode("#e8b228");
-		}
+                while (locationY + table.getHeight() + TableMover.EDGE_INSETS.bottom > height)
+                    locationY -= TableMover.SNAP_SIZE.height;
+                table.setLocation(locationX, locationY);
+            }
+        }));
 
         setEditing(false);
 
-        this.add(new Table(100, 100, 180, 250, yellow));
-        this.add(new Table(300, 350, 90, 90, yellow));
+        this.add(new Table(100, 100, 180, 250, new TableRectangle()));
+        this.add(new Table(300, 350, 90, 90, new TableRound()));
+        this.add(new Table(300, 350, 90, 90, new TableDiamond()));
 	}
 
-	public void updateBounds(int windowWidth, int windowHeight) {
-        // Вместо hard-code-нат размер, взимаме процент от размера на целия прозорец.
-        int width = Utils.percent(windowWidth, 60);
-
-        setBounds(0, 0, width, windowHeight);
-        m_Heading.setBounds(0, 0, width, 40);
-        m_Heading.getComponent(0).setBounds(10, 0, width, 40);
-    }
-
-    public boolean isEditing()
-    {
+    public boolean isEditing() {
         return m_Editing;
     }
 
-    public void setEditing(boolean editing)
-    {
+    public void setEditing(boolean editing) {
         m_Editing = editing;
         if (m_Editing) {
             // Минава през всички маси
-            for (int i = 2; i < this.getComponentCount(); i++) {
+            for (int i = 0; i < this.getComponentCount(); i++) {
                 Component table = this.getComponent(i);
-                table.addMouseListener(m_TableMover);
-                table.addMouseListener(m_TableResizer);
-                table.addMouseMotionListener(m_TableResizer);
+                table.addMouseListener(TableMover);
+                table.addMouseListener(TableResizer);
+                table.addMouseMotionListener(TableResizer);
             }
-            MainFrame.getEditTableLayoutButton().setBackground(GlobalColors.EDITTABLELAYOUT_ON);
-            MainFrame.getAddTableButton().setVisible(true);
         } else {
-            for (int i = 2; i < this.getComponentCount(); i++) {
+            for (int i = 0; i < this.getComponentCount(); i++) {
                 Component table = this.getComponent(i);
-                table.removeMouseListener(m_TableMover);
-                table.removeMouseListener(m_TableResizer);
-                table.removeMouseMotionListener(m_TableResizer);
+                table.removeMouseListener(TableMover);
+                table.removeMouseListener(TableResizer);
+                table.removeMouseMotionListener(TableResizer);
             }
-            MainFrame.getEditTableLayoutButton().setBackground(GlobalColors.EDITTABLELAYOUT_OFF);
-            MainFrame.getAddTableButton().setVisible(false);
+            RemovingTable = false;
         }
     }
 
-    public TableViewOrder getOrderView() { return m_OrderPanel; }
+    void removeTable(Table targetTable) {
+        RemovingTable = false;
+        MainFrame.getRemoveTableButton().setBackground(GlobalColors.MENUITEM_REMOVE_BG);
+        this.remove(targetTable);
+
+        this.invalidate();
+        this.repaint();
+    }
+
+    public TableViewOrder getOrderFrame() { return m_OrderFrame; }
 }

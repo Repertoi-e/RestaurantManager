@@ -14,9 +14,6 @@ import static edu.school.restaurantmanager.table.TableMover.getDragDistance;
 
 public class TableResizer extends MouseAdapter {
 
-    private final static Dimension MINIMUM_SIZE = new Dimension(90, 90);
-    private final static Dimension MAXIMUM_SIZE = new Dimension(250, 250);
-
     private static HashMap<Integer, Integer> cursors = new HashMap<>();
     static {
         cursors.put(1, Cursor.N_RESIZE_CURSOR);
@@ -107,9 +104,11 @@ public class TableResizer extends MouseAdapter {
         if (!m_Resizing)
             return;
 
-        Component component = e.getComponent();
+        Table table = (Table) e.getComponent();
+        Dimension minSize = table.getShape().getMinimumSize(), maxSize = table.getShape().getMaximumSize();
+
         Point dragged = e.getPoint();
-        SwingUtilities.convertPointToScreen(dragged, component);
+        SwingUtilities.convertPointToScreen(dragged, table);
 
         int x = m_Bounds.x;
         int y = m_Bounds.y;
@@ -120,8 +119,8 @@ public class TableResizer extends MouseAdapter {
         if (WEST == (m_Direction & WEST))
         {
             int drag = getDragDistance(m_Pressed.x, dragged.x, TableMover.SNAP_SIZE.width);
-            int maximum = Math.min(width + x, MAXIMUM_SIZE.width);
-            drag = getDragBounded(drag, TableMover.SNAP_SIZE.width, width, MINIMUM_SIZE.width, maximum);
+            int maximum = Math.min(width + x, maxSize.width);
+            drag = getDragBounded(drag, TableMover.SNAP_SIZE.width, width, minSize.width, maximum);
 
             x -= drag;
             width += drag;
@@ -130,8 +129,8 @@ public class TableResizer extends MouseAdapter {
         if (NORTH == (m_Direction & NORTH))
         {
             int drag = getDragDistance(m_Pressed.y, dragged.y, TableMover.SNAP_SIZE.height);
-            int maximum = Math.min(height + y, MAXIMUM_SIZE.height);
-            drag = getDragBounded(drag, TableMover.SNAP_SIZE.height, height, MINIMUM_SIZE.height, maximum);
+            int maximum = Math.min(height + y, maxSize.height);
+            drag = getDragBounded(drag, TableMover.SNAP_SIZE.height, height, minSize.height, maximum);
 
             y -= drag;
             height += drag;
@@ -141,27 +140,27 @@ public class TableResizer extends MouseAdapter {
         if (EAST == (m_Direction & EAST))
         {
             int drag = getDragDistance(dragged.x, m_Pressed.x, TableMover.SNAP_SIZE.width);
-            Dimension boundingSize = component.getParent().getSize();
-            int maximum = Math.min(boundingSize.width - x, MAXIMUM_SIZE.width);
-            drag = getDragBounded(drag, TableMover.SNAP_SIZE.width, width, MINIMUM_SIZE.width, maximum);
+            Dimension boundingSize = table.getParent().getSize();
+            int maximum = Math.min(boundingSize.width - x, maxSize.width);
+            drag = getDragBounded(drag, TableMover.SNAP_SIZE.width, width, minSize.width, maximum);
             width += drag;
         }
 
         if (SOUTH == (m_Direction & SOUTH))
         {
             int drag = getDragDistance(dragged.y, m_Pressed.y, TableMover.SNAP_SIZE.height);
-            Dimension boundingSize = component.getParent().getSize();
-            int maximum = Math.min(boundingSize.height - y, MAXIMUM_SIZE.height);
-            drag = getDragBounded(drag, TableMover.SNAP_SIZE.height, height, MINIMUM_SIZE.height, maximum);
+            Dimension boundingSize = table.getParent().getSize();
+            int maximum = Math.min(boundingSize.height - y, maxSize.height);
+            drag = getDragBounded(drag, TableMover.SNAP_SIZE.height, height, minSize.height, maximum);
             height += drag;
         }
 
-        component.setBounds(x, y, width, height);
-        if (component instanceof Table)
-            ((Table)component).updateBounds();
-        else
-            System.err.println("Resizing a non-table in TableResizer!?");
-        component.validate();
+        if (table.getShape().shouldAlwaysBeSquare())
+            width = height;
+
+        table.setBounds(x, y, width, height);
+        table.updateBounds();
+        table.validate();
     }
 
     private int getDragBounded(int drag, int snapSize, int dimension, int minimum, int maximum)

@@ -1,6 +1,10 @@
 package edu.school.restaurantmanager.menu;
 
 import edu.school.restaurantmanager.GlobalColors;
+import edu.school.restaurantmanager.MainFrame;
+import edu.school.restaurantmanager.table.Table;
+import edu.school.restaurantmanager.table.TableViewOrder;
+import edu.school.restaurantmanager.table.order.ReceiptEntry;
 
 import java.awt.*;
 import java.io.File;
@@ -42,6 +46,11 @@ public class MenuItem extends JPanel {
             m_Add.setFont(buttonFont);
         }
         m_Add.setVisible(false);
+        m_Add.addActionListener(e -> {
+            Table table = MainFrame.getTableView().getOrderFrame().getCurrentTable();
+            if (table.Order != null)
+                table.Order.add(new ReceiptEntry(this, 1));
+        });
         this.add(m_Add);
 
         m_Remove = new MenuItemButton();
@@ -53,11 +62,14 @@ public class MenuItem extends JPanel {
         }
         m_Remove.setVisible(false);
         m_Remove.addActionListener(e -> {
-
+            Table table = MainFrame.getTableView().getOrderFrame().getCurrentTable();
+            if (table.Order != null)
+                table.Order.add(new ReceiptEntry(this, -1));
         });
         this.add(m_Remove);
 
-        setButtonsVisible(true);
+        if (MainFrame.getTableView().getOrderFrame().isVisible())
+            setButtonsVisible(true);
     }
 
     @Override
@@ -82,7 +94,7 @@ public class MenuItem extends JPanel {
         m_Remove.setBounds(this.getWidth() - buttonSize - 10, this.getHeight() - buttonSize - 10, buttonSize, buttonSize);
     }
 
-    void setButtonsVisible(boolean visible)
+    public void setButtonsVisible(boolean visible)
     {
         m_Add.setVisible(visible);
         m_Remove.setVisible(visible);
@@ -92,6 +104,13 @@ public class MenuItem extends JPanel {
     public int getPrice() { return m_Price; }
 
     public void setName(String name) {
+        // Ако името е твърде дълго го съкращаваме с ...
+        if (name.length() > 21)
+        {
+            name = name.substring(0, 18);
+            name += "...";
+        }
+
         m_Name = name;
         invalidate();
         repaint();
@@ -110,5 +129,14 @@ public class MenuItem extends JPanel {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, image.toString(), "Файлът не е намерен!", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    @Override
+    public boolean equals(Object other)
+    {
+        if (other instanceof MenuItem)
+            return ((MenuItem) other).m_Name.equals(m_Name) && ((MenuItem) other).m_Price == m_Price
+                    && ((MenuItem) other).m_Image.equals(m_Image);
+        return false;
     }
 }

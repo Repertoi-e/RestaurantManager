@@ -10,8 +10,23 @@ public class TableColorPalette
 	public Color Top;
 	
 	// Столът
-	public Color Chair;
+	Color Chair;
 	
 	// Сянката от масата на стола
-	public Color ChairShadow;
+	Color ChairShadow;
+
+	// Цветовете, когато масите за свободни и заети
+    static final TableColorPalette AVAILABLE = new TableColorPalette();
+    static {
+        AVAILABLE.Top = new Color(129, 133, 143);
+        AVAILABLE.Chair = new Color(113, 118, 124);
+        AVAILABLE.ChairShadow = new Color(104, 109, 116);
+    }
+
+    static final TableColorPalette UNAVAILABLE = new TableColorPalette();
+    static {
+        UNAVAILABLE.Top = Color.decode("#fdd835");
+        UNAVAILABLE.Chair = Color.decode("#fbc02d");
+        UNAVAILABLE.ChairShadow = Color.decode("#e8b228");
+    }
 }

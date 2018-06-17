@@ -23,7 +23,7 @@ public class TableMover extends MouseAdapter
     static final Insets DRAG_INSETS = new Insets(5, 5, 5, 5);
 
     // На колко пиксела може да макс разстояние от стените на полето с масите
-    private Insets m_EdgeInsets = new Insets(45, 5, 45, 3);
+    static final Insets EDGE_INSETS = new Insets(5, 5, 5, 5);
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -56,18 +56,18 @@ public class TableMover extends MouseAdapter
         int locationY = m_Location.y + dragY;
 
         // Премества масата ако излиза от полето.
-        while (locationX < m_EdgeInsets.left)
+        while (locationX < EDGE_INSETS.left)
             locationX += SNAP_SIZE.width;
 
-        while (locationY < m_EdgeInsets.top)
+        while (locationY < EDGE_INSETS.top)
             locationY += SNAP_SIZE.height;
 
         Dimension d = component.getParent().getSize();
 
-        while (locationX + component.getSize().width + m_EdgeInsets.right > d.width)
+        while (locationX + component.getWidth() + EDGE_INSETS.right > d.width)
             locationX -= SNAP_SIZE.width;
 
-        while (locationY + component.getSize().height + m_EdgeInsets.bottom > d.height)
+        while (locationY + component.getHeight() + EDGE_INSETS.bottom > d.height)
             locationY -= SNAP_SIZE.height;
 
         component.setLocation(locationX, locationY);

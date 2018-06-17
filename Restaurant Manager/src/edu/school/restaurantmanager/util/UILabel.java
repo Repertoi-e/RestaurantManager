@@ -1,11 +1,15 @@
-package edu.school.restaurantmanager.ui;
+package edu.school.restaurantmanager.util;
 
 import edu.school.restaurantmanager.util.Utils;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
-public class UILabel {
+// Като JLabel, само че с леко тъмен фон зад текста и
+// размера на шрифта се изчислява от границите
+
+public class UILabel extends JComponent {
 
     private String m_Text;
     private Font m_Font;

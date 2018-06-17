@@ -11,8 +11,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 
 // Прозорец, с който се променя съдържанието на менюто.
 
@@ -20,9 +18,9 @@ import java.nio.file.Files;
 public class WorkFile extends JFrame {
     private static final int Width = 600, Height = 500;
 
-    File m_File = null;
-    JTextArea m_TextArea;
-    JFileChooser m_FileChooser = new JFileChooser();
+    private File m_ImageDir = null;
+    private JTextArea m_TextArea;
+    private JFileChooser m_DirectoryChooser = new JFileChooser();
 
     public WorkFile() {
         this.setTitle("Work file");
@@ -36,12 +34,7 @@ public class WorkFile extends JFrame {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
-                MainFrame.getMenuView().updateItems(m_File, m_TextArea.getText());
-
-                // Запаметява промените в файла
-                try {
-                    Files.write(m_File.toPath(), m_TextArea.getText().getBytes());
-                } catch (IOException e) { e.printStackTrace(); }
+                MainFrame.getMenuView().updateItems(m_ImageDir, m_TextArea.getText());
             }
         });
 
@@ -73,39 +66,21 @@ public class WorkFile extends JFrame {
         if (icon != null)
             openButton.setIcon(new ImageIcon(icon.getScaledInstance(buttonSize - 5, -1, Image.SCALE_SMOOTH)));
         openButton.setBackground(GlobalColors.TABLEVIEW_BG_COLOR);
-        openButton.addActionListener(e -> chooseWorkFile());
+        openButton.addActionListener(e -> chooseImageDirectory());
         openButton.setBounds(10, Height - 2 * buttonSize, buttonSize, buttonSize);
         contentPane.add(openButton);
     }
 
-    public File getFile() { return m_File; }
+    public File getImageDir() { return m_ImageDir; }
 
-    // !!!
-    // Може да няма промени, но е сложно да се провери, затова просто питаме всеки път.
-    public void askForUnsavedChanges() {
-        if (m_File != null)
-        {
-            int dialogResult = JOptionPane.showConfirmDialog(this, "Да бъдат ли запазени промените в файла?", "Незапазени промени.", JOptionPane.YES_NO_OPTION);
-            if(dialogResult == 0) {
-                try {
-                    Files.write(m_File.toPath(), m_TextArea.getText().getBytes());
-                } catch (IOException e) { e.printStackTrace(); }
-            }
-        }
-    }
-
-    public void chooseWorkFile() {
-        int result = m_FileChooser.showOpenDialog(this);
+    public boolean chooseImageDirectory() {
+        m_DirectoryChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        int result = m_DirectoryChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION)
         {
-            askForUnsavedChanges();
-            m_File = m_FileChooser.getSelectedFile();
-            try {
-                m_TextArea.setText(new String(Files.readAllBytes(m_File.toPath())));
-            } catch (IOException e) { e.printStackTrace(); }
-        } else if (m_File == null) {
-            JOptionPane.showMessageDialog(null, "Моля, изберете файл, където да бъдат запазени менюто и подредбата на масите.", "Грешка", JOptionPane.ERROR_MESSAGE);
-            chooseWorkFile();
+            m_ImageDir = m_DirectoryChooser.getSelectedFile();
+            return true;
         }
+        return false;
     }
 }

@@ -2,9 +2,13 @@ package edu.school.restaurantmanager.util;
 
 // Полезни функции, използвани често, без място другаде.
 
-import edu.school.restaurantmanager.table.TableOrder;
+import edu.school.restaurantmanager.table.Table;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.net.URL;
 
 public class Utils {
 	
@@ -15,12 +19,25 @@ public class Utils {
 	}
 
 	public static String getPriceAsString(int price) {
-		return price / 100 + "." + String.format("%02d", price % 100) + " лв.";
+		return getPriceAsString(price, true);
 	}
 
-	public static String getBookHourAsString(TableOrder order) {
-		return order.Hour + ":" + String.format("%02d", order.Minute);
-	}
+    public static String getPriceAsString(int price, boolean currency) {
+        return price / 100 + "." + String.format("%02d", price % 100) + (currency ? " лв." : "");
+    }
+
+	public static ImageIcon getScaledButtonIcon(URL input, int size) {
+        BufferedImage editIcon = null;
+        try
+        {
+            editIcon = ImageIO.read(input);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (editIcon != null)
+            return new ImageIcon(editIcon.getScaledInstance(size, -1, Image.SCALE_SMOOTH));
+        return null;
+    }
 
 	public static void drawCenteredString(Graphics g, String text, Rectangle rect, Font font) {
 		FontMetrics metrics = g.getFontMetrics(font);
