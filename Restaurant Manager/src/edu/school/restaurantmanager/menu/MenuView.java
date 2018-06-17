@@ -45,8 +45,8 @@ public class MenuView extends JPanel {
     }
 
 	public void updateItems(File imagesDir, String newItems) {
-	    // i = 1, пропуска заглавието, тъй като и то е компонент
-	    for (int i = 1; i < this.getComponentCount(); i++)
+        m_Categories.clear();
+	    for (int i = 0; i < this.getComponentCount(); i++)
 	        this.remove(i);
 
         File menuFile = new File("Menu.txt");
@@ -120,10 +120,10 @@ public class MenuView extends JPanel {
             }
         }
 
-        // След като са добавени новите продукти,
-        // караме Java да ги нарисува.
         rearrangeMenu();
 
+        // След като са добавени новите продукти,
+        // караме Java да ги нарисува.
         this.invalidate();
 	    this.repaint();
 	}
